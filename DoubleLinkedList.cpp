@@ -15,7 +15,8 @@ public:
   }
   void print() {
 
-    cout << value << " " << endl;
+    // cout << value << " " << endl;
+    cout << value << " ";
     cout << name << " " << endl;
   }
 };
@@ -324,11 +325,13 @@ public:
       return;
     }
     Node<T> *prev1 = node->prev;
-    Node<T> *temp = prev1->next;
+    Node<T> *temp = node;
     Node<T> *next1 = temp->next;
 
-    prev1->next = temp->next;
-    next1->prev = prev1;
+    if (next1)
+      prev1->next = next1;
+    if (prev1)
+      next1->prev = prev1;
     delete temp;
     length--;
   }
@@ -348,11 +351,11 @@ public:
   void evenOddSplit(){
     int index;
     DoubleLinkedList<T> *even = new DoubleLinkedList<T>(head->value);
-    DoubleLinkedList<T> *odd = new DoubleLinkedList<T>(head->next->value);
-
+    deleteAtHead();
+    DoubleLinkedList<T> *odd = new DoubleLinkedList<T>(head->value);
+    deleteAtHead();
+    
     index = 2;
-    head = head->next->next;
-
     while (head){
       if (index % 2 == 0){
         even->append(head->value);
@@ -360,7 +363,8 @@ public:
       else {
         odd->append(head->value);
       }
-      head = head->next;
+      // head = head->next;
+      deleteAtHead();
       ++index;
     }
     cout << "Even Linked List: " << endl;
@@ -370,41 +374,207 @@ public:
   }
 
   void reverseList(){
+    Node<T> *curr = head;
+    Node<T> *prev = nullptr;
+    Node<T> *next = nullptr;
 
+    Node<T> *temp = head;
+    while(curr){
+      next = curr->next;
+      curr->next = prev;
+      prev = curr;
+      curr = next;
+    }
+
+    head = tail;
+    tail = temp;
+    printList();
+  }
+
+  void executeCommands(int option){
+    string name;
+    int val;
+    int index;
+    Data *data;
+    switch(option){   
+      case 1:
+        return; 
+      case 2:
+        cout << "Enter data name: ";
+        cin >> name;
+        cout << "Enter data value (int): ";
+        cin >> val;
+        data = new Data(val, name);
+        prepend(data);
+        cout << "Updated list:" << endl;
+        printList();
+        break;
+      case 3:
+        cout << "Enter data name: ";
+        cin >> name;
+        cout << "Enter data value (int): ";
+        cin >> val;
+        data = new Data(val, name);
+        append(data);
+        cout << "Updated list:" << endl;
+        printList();
+        break;
+      case 4:
+        cout << "Enter data name: ";
+        cin >> name;
+        cout << "Enter data value (int): ";
+        cin >> val;
+        cout << "Type index to insert in: ";
+        cin >> index;
+        data = new Data(val, name);
+        cout << "Insert data status(0:false, 1:true): " << insert(index, data) << endl;
+        cout << "Updated list:" << endl;
+        printList();
+        break;
+      case 5:
+        deleteAtHead();
+        cout << "Linked list after deleting the head: " << endl;
+        printList();
+        break;
+      case 6:
+        deleteAtTail();
+        cout << "Linked list after deleting the tail: " << endl;
+        printList();
+        break;
+      case 7:
+        cout << "Pick node to delete by index: " << endl;
+        cin >> index;
+        deleteAtIndex(index);
+        cout << "Linked list after deleting node at index " << index << ":" << endl;
+        printList();
+        break;
+      case 8:
+        cout << "Linked list after the list was reversed: " << endl;
+        reverseList();
+        break;
+      case 9:
+        cout << "Linked list after being sorted: " << endl;
+        sortList();
+        break;
+      case 10:
+        cout << "Enter data name: ";
+        cin >> name;
+        cout << "Enter data value (int): ";
+        cin >> val;
+        data = new Data(val, name);
+        cout << "# of multiples of data type with ";
+        cout << "name " << name << "and ";
+        cout << "value " << val << " is ";
+        cout << countMultiples(data) << endl;
+        break;
+      case 11:
+        cout << "List after removing multiples: " << endl;
+        removeMultiples();
+        break;
+      case 12:
+        evenOddSplit();
+        break;   
+      case 13:
+        cout << "Starting to exit program..." << endl;
+        return;
+    }
   }
 
 };
 
 // Main Program
 
+  void printMenu(){
+    cout << "Menu" << endl;
+    cout << "1. Delete a List" << endl;
+    cout << "2. Insert at Head" << endl;
+    cout << "3. Insert at Tail" << endl;
+    cout << "4. Insert at Index" << endl;
+    cout << "5. Delete at Head" << endl;
+    cout << "6. Delete at Tail" << endl;
+    cout << "7. Delete at Index" << endl;
+    cout << "8. Reverse List" << endl;
+    cout << "9. Sort List" << endl;
+    cout << "10. Count Multiples" << endl;
+    cout << "11. Delete Multiples" << endl;
+    cout << "12. Split List Even Odd" << endl;
+    cout << "13. Exit" << endl;
+    cout << "Pick an option: " << endl;
+  }
+
+  DoubleLinkedList<Data>* createList() {
+    string nodeName;
+    int dataVal;
+    cout << "First create a linked list" << endl;
+    cout << "Enter node name: ";
+    cin >> nodeName;
+    cout << "Enter data val (integer): " << endl;
+    cin >> dataVal;
+
+    Data *first = new Data(dataVal, nodeName);
+    DoubleLinkedList<Data> *newList = new DoubleLinkedList<Data>(first);
+
+    return newList;
+  }
+
 int main() {
   // creating data object
-  Data *d1 = new Data(10, "a");
-  Data *d2 = new Data(11, "b");
-  Data *d3 = new Data(12, "c");
-  Data *d4 = new Data(13, "d");
-  Data *d5 = new Data(14, "e");
-  Data *d6 = new Data(15, "f");
+  // Data *d1 = new Data(10, "a");
+  // Data *d2 = new Data(11, "b");
+  // Data *d3 = new Data(12, "c");
+  // Data *d4 = new Data(13, "d");
+  // Data *d5 = new Data(14, "e");
+  // Data *d6 = new Data(15, "f");
   // Data *d7 = new Data(16, "g");
-  // Data *d8 = new Data(12, "a");
+  // Data *d8 = new Data(10, "a");
   // Data *d9 = new Data(10, "a");
   // Data *d10 = new Data(11, "a");
-  Data *d11 = new Data(15, "a");
+  // Data *d11 = new Data(16, "a");
 
 
 
  // Creating Linked List
- DoubleLinkedList<Data> *ll1 = new DoubleLinkedList<Data>(d1);
-  ll1->append(d2);
-  ll1->append(d3);
-  ll1->append(d4);
-  ll1->append(d5);
-  ll1->append(d6);
+//  DoubleLinkedList<Data> *ll1 = new DoubleLinkedList<Data>(d1);
+//   ll1->append(d2);
+//   ll1->append(d3);
+//   ll1->append(d4);
+//   ll1->append(d5);
+//   ll1->append(d6);
   // ll1->append(d7);
   // ll1->append(d8);
   // ll1->append(d9);
   // ll1->append(d10);
-  ll1->append(d11);
+  // ll1->append(d11);
+
+  int userInput = 1;
+  string menuDisplay;
+  DoubleLinkedList<Data> *dll = createList();
+
+  while(userInput >= 1 && userInput <= 13){
+    cout << "Type \"y\" to display menu";
+    cout << "(and any other letter to not display): ";
+    cin >> menuDisplay;
+    if (menuDisplay == "y")
+      printMenu();
+    cin >> userInput;
+    if (userInput >= 1 && userInput <= 13)
+      dll->executeCommands(userInput);
+    else {
+        cout << "Invalid option: " << userInput << endl;  
+        while (userInput < 1 || userInput > 13) {
+          cout << "New user input (between 1 and 13): ";
+          cin >> userInput;
+        }
+    }
+
+    if (userInput == 13)
+      break;
+    if (userInput == 1 || userInput == 12) {
+      delete dll;
+      cout << "Linked list successfully deleted" << endl;
+      break;
+    }
+  }
 
   // ll1->deleteAtHead();
   // ll1->deleteAtTail();
@@ -414,13 +584,19 @@ int main() {
   // ll1->sortList();
   // Calling operations on Linked List
   // ll1->printList();
+  // cout << "list :" << endl;
+  // ll1->printList();
+  // // ll1->evenOddSplit(ll1);
+  // cout << "after reverse: " << endl;
+  // ll1->reverseList();
 
-  // cout << ll1->countMultiples(d10) << endl;
-  cout << "Original list: " << endl;
-  ll1->printList();
-  cout << "After removing nodes with matching data: " << endl;
-  ll1->removeMultiples();
-  // ll1->evenOddSplit();
+  // // cout << ll1->countMultiples(d10) << endl;
+  // cout << "Original list after split: " << endl;
+  // ll1->printList();
+  // cout << "After removing nodes with matching data: " << endl;
+  // cout << "remove multiples:" << endl;
+  // ll1->removeMultiples();
+  cout << "Program exited" << endl;
 
   return 0;
 }
