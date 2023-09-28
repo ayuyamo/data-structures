@@ -128,7 +128,6 @@ public:
   }
 
   // Insert at beginning
-
   void prepend(T *value) {
     Node<T> *newNode = new Node<T>(value);
     if (length == 0) {
@@ -142,7 +141,7 @@ public:
     length++;
   }
 
-    void prepend(Node<T> *newNode) {
+  void prepend(Node<T> *newNode) {
     if (length == 0) {
       head = newNode;
       tail = newNode;
@@ -156,7 +155,6 @@ public:
 
 
   // Insert at Index
-
   bool insert(int index, T *value) {
     if (index < 0 || index > length)
       return false;
@@ -291,7 +289,7 @@ public:
     Node<T>* temp = head; 
     while(temp){
       if (countMultiples(temp->value) > 1){   
-        removeMultiplesOf(temp->value->value); 
+        removeMultiplesOf(temp->value); 
         temp = head;
         continue;
       }
@@ -300,10 +298,10 @@ public:
     printList();
   }
 
-  void removeMultiplesOf(int val){
+  void removeMultiplesOf(T* data){
     Node<T> *temp = head;
     while (temp){
-      if (temp->value->value == val) {
+      if (temp->value->value == data->value && temp->value->name == data->name) {
         Node<T> *nextNode = temp->next;
         deleteNode(temp);
         temp = nextNode;
@@ -340,7 +338,7 @@ public:
     int count = 0;
     Node<T> *temp = head;
     while(temp){
-      if (temp->value->value == data->value){
+      if (temp->value->value == data->value && temp->value->name == data->name){
         ++count;
       }
       temp = temp->next;
@@ -427,7 +425,9 @@ public:
         cout << "Type index to insert in: ";
         cin >> index;
         data = new Data(val, name);
-        cout << "Insert data status(0:false, 1:true): " << insert(index, data) << endl;
+
+        if (insert(index, data) == 0)
+          cout << "Invalid index -- Unable to insert node" << endl;
         cout << "Updated list:" << endl;
         printList();
         break;
@@ -462,7 +462,7 @@ public:
         cout << "Enter data value (int): ";
         cin >> val;
         data = new Data(val, name);
-        cout << "# of multiples of data type with ";
+        cout << "# of multiples of data with ";
         cout << "name " << name << "and ";
         cout << "value " << val << " is ";
         cout << countMultiples(data) << endl;
@@ -518,33 +518,6 @@ public:
   }
 
 int main() {
-  // creating data object
-  // Data *d1 = new Data(10, "a");
-  // Data *d2 = new Data(11, "b");
-  // Data *d3 = new Data(12, "c");
-  // Data *d4 = new Data(13, "d");
-  // Data *d5 = new Data(14, "e");
-  // Data *d6 = new Data(15, "f");
-  // Data *d7 = new Data(16, "g");
-  // Data *d8 = new Data(10, "a");
-  // Data *d9 = new Data(10, "a");
-  // Data *d10 = new Data(11, "a");
-  // Data *d11 = new Data(16, "a");
-
-
-
- // Creating Linked List
-//  DoubleLinkedList<Data> *ll1 = new DoubleLinkedList<Data>(d1);
-//   ll1->append(d2);
-//   ll1->append(d3);
-//   ll1->append(d4);
-//   ll1->append(d5);
-//   ll1->append(d6);
-  // ll1->append(d7);
-  // ll1->append(d8);
-  // ll1->append(d9);
-  // ll1->append(d10);
-  // ll1->append(d11);
 
   int userInput = 1;
   string menuDisplay;
@@ -562,7 +535,7 @@ int main() {
     else {
         cout << "Invalid option: " << userInput << endl;  
         while (userInput < 1 || userInput > 13) {
-          cout << "New user input (between 1 and 13): ";
+          cout << "Pick a number between 1 and 13: ";
           cin >> userInput;
         }
     }
@@ -576,26 +549,6 @@ int main() {
     }
   }
 
-  // ll1->deleteAtHead();
-  // ll1->deleteAtTail();
-  // ll1->deleteAtIndex(4);
-  // ll1->deleteNode(ll1->get(4));
-  // ll1->removeMultiples(ll1->get(0)->value->value);
-  // ll1->sortList();
-  // Calling operations on Linked List
-  // ll1->printList();
-  // cout << "list :" << endl;
-  // ll1->printList();
-  // // ll1->evenOddSplit(ll1);
-  // cout << "after reverse: " << endl;
-  // ll1->reverseList();
-
-  // // cout << ll1->countMultiples(d10) << endl;
-  // cout << "Original list after split: " << endl;
-  // ll1->printList();
-  // cout << "After removing nodes with matching data: " << endl;
-  // cout << "remove multiples:" << endl;
-  // ll1->removeMultiples();
   cout << "Program exited" << endl;
 
   return 0;
