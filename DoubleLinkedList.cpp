@@ -141,19 +141,6 @@ public:
     length++;
   }
 
-  void prepend(Node<T> *newNode) {
-    if (length == 0) {
-      head = newNode;
-      tail = newNode;
-    } else {
-      newNode->next = head;
-      head->prev = newNode;
-      head = newNode;
-    }
-    length++;
-  }
-
-
   // Insert at Index
   bool insert(int index, T *value) {
     if (index < 0 || index > length)
@@ -233,15 +220,16 @@ public:
   void sortList(){
     Node<T> *currNode = head->next;
     while(currNode){
+      Node<T> *next1 = currNode->next;
       Node<T> *prev1 = currNode->prev;
 
       while(prev1 && prev1->value->value > currNode->value->value)
         prev1 = prev1->prev;
       moveAfter(currNode, prev1);
 
-      currNode = currNode->next;
+      currNode = next1;
     }
-
+    cout << "length: " << length << endl;
     printList();
   }
 
@@ -265,14 +253,13 @@ public:
     if (nodeBefore) {
       insertAfter(nodeBefore, nodeToMove);
     } else {
-      prepend(nodeToMove); 
+      nodeToMove->next = head;
+      head->prev = nodeToMove;
+      head = nodeToMove;
     }
   }
   void insertAfter(Node<T>* currNode, Node<T> *newNode) {
-    if (head == nullptr){
-      head = newNode;
-      tail = newNode;
-    } else if (currNode == tail){
+    if (currNode == tail){
       tail->next = newNode;
       newNode->prev = tail;
       tail = newNode;
@@ -361,7 +348,6 @@ public:
       else {
         odd->append(head->value);
       }
-      // head = head->next;
       deleteAtHead();
       ++index;
     }
