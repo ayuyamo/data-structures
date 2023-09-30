@@ -229,7 +229,6 @@ public:
 
       currNode = next1;
     }
-    cout << "length: " << length << endl;
     printList();
   }
 
