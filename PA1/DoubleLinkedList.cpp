@@ -14,8 +14,6 @@ public:
     this->name = name;
   }
   void print() {
-
-    // cout << value << " " << endl;
     cout << value << " ";
     cout << name << " " << endl;
   }
@@ -177,6 +175,8 @@ public:
       head = head->next;
       head->prev = nullptr;
     }
+    cout << "Deleted node: " << endl;
+    temp->print();
     delete temp;
     length--;
   }
@@ -192,6 +192,8 @@ public:
       tail = tail->prev;
       tail->next = nullptr;
     }
+    cout << "Deleted node: " << endl;
+    temp->print();
     delete temp;
     length--;
   }
@@ -213,6 +215,9 @@ public:
 
     prev1->next = temp->next;
     next1->prev = prev1;
+
+    cout << "Deleted node: " << endl;
+    temp->print();
     delete temp;
     length--;
   }
@@ -350,8 +355,10 @@ public:
       deleteAtHead();
       ++index;
     }
-    cout << "Even Linked List: " << endl;
+    cout << "----------------------------" << endl;
+    cout << "Even Linked List:" << endl;
     even->printList();
+    cout << "----------------------------" << endl;
     cout << "Odd Linked List: " << endl;
     odd->printList();
   }
@@ -470,21 +477,22 @@ public:
 // Main Program
 
   void printMenu(){
-    cout << "Menu" << endl;
-    cout << "1. Delete a List" << endl;
-    cout << "2. Insert at Head" << endl;
-    cout << "3. Insert at Tail" << endl;
-    cout << "4. Insert at Index" << endl;
-    cout << "5. Delete at Head" << endl;
-    cout << "6. Delete at Tail" << endl;
-    cout << "7. Delete at Index" << endl;
-    cout << "8. Reverse List" << endl;
-    cout << "9. Sort List" << endl;
-    cout << "10. Count Multiples" << endl;
-    cout << "11. Delete Multiples" << endl;
-    cout << "12. Split List Even Odd" << endl;
-    cout << "13. Exit" << endl;
-    cout << "Pick an option: " << endl;
+    cout << "============Menu============" << endl;
+    cout << "     1.Delete a List       " << endl;
+    cout << "     2.Insert at Head      " << endl;
+    cout << "     3.Insert at Tail      " << endl;
+    cout << "     4.Insert at Index     " << endl;
+    cout << "     5.Delete at Head      " << endl;
+    cout << "     6.Delete at Tail      " << endl;
+    cout << "     7.Delete at Index     " << endl;
+    cout << "     8.Reverse List        " << endl;
+    cout << "       9.Sort List         " << endl;
+    cout << "    10.Count Multiples     " << endl;
+    cout << "   11.Delete Multiples     " << endl;
+    cout << " 12. Split List Even Odd   " << endl;
+    cout << "         13.Exit            " << endl;
+    cout << "============================" << endl;
+    cout << "Pick an option: ";
   }
 
   DoubleLinkedList<Data>* createList() {
@@ -498,7 +506,8 @@ public:
 
     Data *first = new Data(dataVal, nodeName);
     DoubleLinkedList<Data> *newList = new DoubleLinkedList<Data>(first);
-
+    cout << "List created: " << endl;
+    newList->printList();
     return newList;
   }
 
@@ -509,12 +518,9 @@ int main() {
   DoubleLinkedList<Data> *dll = createList();
 
   while(userInput >= 1 && userInput <= 13){
-    cout << "Type \"y\" to display menu";
-    cout << "(and any other letter to not display): ";
-    cin >> menuDisplay;
-    if (menuDisplay == "y")
-      printMenu();
+    printMenu();
     cin >> userInput;
+    cout << "----------------------------" << endl;
     if (userInput >= 1 && userInput <= 13)
       dll->executeCommands(userInput);
     else {
