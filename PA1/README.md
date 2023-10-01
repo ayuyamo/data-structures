@@ -25,7 +25,7 @@
     - **If `10` was picked,** the terminal will require user to type in data (`string` name, `int` value) and use given input to **compare & display the number of nodes with matching data**.
     - **If `11` was picked,** the terminal will **display the new list after every node with matching data (its name and value) was removed**.
     - **If `12` was picked,** in terminal each deleted node will be displayed, following the contents inside **`even` and `odd` lists** created after the original list was splited. Afterward the original list will be destroyed (using   the `delete` keyword) and the program exits(because inside the `main()` program, the while loop always checks if `userInput` was `1`, `12` or `13`, where in the first two cases the linked list will be deleted before `break;` was executed to exit the loop, which ends the program). 
-    - - **If `13` was picked,** the program will call `executeCommands()` with input `13`, which simply returns back to the `main()` program, check if `userInput` was `13`, in which case the `break;` command will be called to exit the while loop, hence ending the program. 
+    - **If `13` was picked,** the program will call `executeCommands()` with input `13`, which simply returns back to the `main()` program, check if `userInput` was `13`, in which case the `break;` command will be called to exit the while loop, hence ending the program. 
 
     ***Desctiption of the functions***:
     - `executeCommands()`: A helper function that was called based on the user input inside the while loop in the main program. It uses switch-case statement to executes different sets of commands based on the case number.
