@@ -28,6 +28,14 @@
     - **If `13` was picked,** the program will call `executeCommands()` with input `13`, which simply returns back to the `main()` program, check if `userInput` was `13`, in which case the `break;` command will be called to exit the while loop, hence ending the program. 
 
     ***Desctiption of the functions***:
+    - `DoubleLinkedList()`: This constructor without parameters was added to enable creating an empty list.
+    ```
+        DoubleLinkedList(){
+            head = nullptr;
+            tail = nullptr;
+            length = 0;
+        }
+    ```
     - `executeCommands()`: A helper function that was called based on the user input inside the while loop in the main program. It uses switch-case statement to executes different sets of commands based on the case number.
 
     - `deleteAtHead()`: checks if the `length` is `0`, in which case no further action is needed because there is no node to delete. If not, the list's `head` pointer will be assigned to variable `temp`. Next it will check if the `length` is `1`, if so then the `head` and `tail` pointers will be updated to `nullptr` and `temp` will be deleted (previous head node was deleted). Otherwise, the `else{}` statement will be executed, where `head` will point to the successor of the previous `head` node, hte `prev` pointer now pointing to `nullptr`. After `else{}` was done, the previous `head` node (currently assigned to `temp`) will be deleted. `length` was decremented because now there's one less node in the list. **Note: `temp` will be printed so user knows which node will be deleted before it was actually deleted.** 

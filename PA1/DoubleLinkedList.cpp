@@ -512,11 +512,12 @@ int main() {
     printMenu();
     cin >> userInput;
     cout << "----------------------------" << endl;
-    if (userInput < 1 || userInput > 13)
+    if (userInput < 1 || userInput > 13) {
       cout << "Invalid option: " << userInput << endl;  
       while (userInput < 1 || userInput > 13) {
         cout << "Pick a number between 1 and 13: ";
         cin >> userInput;
+      }
     }
     dll->executeCommands(userInput);
 
