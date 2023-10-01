@@ -503,27 +503,10 @@ public:
     cout << "Pick an option: ";
   }
 
-  DoubleLinkedList<Data>* createList() {
-    string nodeName;
-    int dataVal;
-    cout << "First create a linked list" << endl;
-    cout << "Enter node name: ";
-    cin >> nodeName;
-    cout << "Enter data val (integer): " << endl;
-    cin >> dataVal;
-
-    Data *first = new Data(dataVal, nodeName);
-    DoubleLinkedList<Data> *newList = new DoubleLinkedList<Data>(first);
-    cout << "List created: " << endl;
-    newList->printList();
-    return newList;
-  }
-
 int main() {
 
   int userInput = 1;
-  // DoubleLinkedList<Data> *dll = createList();
-    DoubleLinkedList<Data> *dll = new DoubleLinkedList<Data>();
+  DoubleLinkedList<Data> *dll = new DoubleLinkedList<Data>();
 
   while(userInput >= 1 && userInput <= 13){
     printMenu();

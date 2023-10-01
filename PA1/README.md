@@ -8,8 +8,7 @@
     - README.pdf
 ## Software that was used for this assignment: VSCode
 ## How to get started?
-- When the program first runs, it needs to create a list, hence requiring the user to choose data and value for the first node, which it will use to initialize the new list with. After the process was complete it will print the new list (which then only contains the first node created)
-- After that, a menu of options for manipulating the list will be displayed, prompting user to type an `int` number between `1` and `13` to pick an option. A warning will be displayed to require typing another number if the input was not in range `1-13`. 
+- When the program first runs, it will create a new list (`DoubleLinkedList<Data> *dll = new DoubleLinkedList<Data>();`). After that, a menu of options for manipulating the list will be displayed, prompting user to type an `int` number between `1` and `13` to pick an option. A warning will be displayed to require typing another number if the input was not in range `1-13`. 
 
     ***Options***:
     - **If `1` was picked,** the **list will be deleted** and program will exit. 
@@ -101,7 +100,6 @@
 ***Helper Functions***:
 
 - `printMenu()` : **O(1)**, since every command in the function is print line that only takes constant run time
-- `createList()`: **O(1)**, because even though inside the function the `printList()` method was called to print the contents of the new list (which loops through and print names and values of each node in the list), there always only one node that the new list was intialized with, hence the while loop inside `printList()` for that particular case only runs once, and `createList()` itself will only be used once for initializing the list at the beginnning of the program, so I'd say it runs to O(1) instead of O(n).
 - `executeCommands()`: **O(n^2)**, since in the worst case scenario, the user will choose the input `11` to remove duplicate nodes in the list, which jumps to `case 11` of the switch-case statement inside the `executeCommands()` function, and inside `case 11`, `removeMultiples()` is called. Since `removeMultiples()` runs to O(n^2) and is inside `executeCommands()`, this function runs to O(n^2).
 - `deleteNode()`: **O(1)**; every statement inside the function runs to constant time.
 - `removeMultiplesOf()`: **O(n)**; the function has a while loop to test every node in the linked list that has matching data as the given `T* data` argument, which runs to O(n).
