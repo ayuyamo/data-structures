@@ -25,3 +25,49 @@
     - If `12` was picked, in terminal each deleted node will be displayed, following the contents inside `even` and `odd` lists created after the original list was splited. Afterward the original list will be destroyed (using   the `delete` keyword) and the program exits. 
     b. Describe what function is called by each input and briefly describe each function.
 ### Runtime Complexity of each function
+- `deleteAtHead()` : **O(1)** (Because every command in the function runs constant time)
+- `deleteAtTail()` : **O(1)** (Because every command in the function runs constant time)
+- `deleteAtIndex()`: **O(n)** (When getting the previous node of the node to delete, the command `Node<T> *prev1 = get(index - 1);` calls to `get()` method that runs to the **O(n)** complexity)
+- `sortList()` : **O(n)** 
+    ``` while(prev1 && prev1->value->value > currNode->value->value)
+            prev1 = prev1->prev;
+    ```
+    - The above command makes the worst run time complexity for this method O(n) by taking into account the possibility that `currNode` (when being the last node in the list) while be compared to every other (previous) node in the list to find the smallest `prev1` node value to insert `currNode` after (or `currNode` itself might be the node with smallest values and be prepended to the list)
+- `removeMultiples()` : **O(n^2)** 
+    - This is because `removemultiples()` has a while loop (O(n)) that loops through each node in the given list, and everytime `countMultiples()` will be called (to check if each node has duplicates), which runs to O(n), and the function will call to `removeMultiplesOf()` if the `if` statement was true also runs to O(n) (but since these function call operations aren't nested within each other, the overall runtime is still O(n)). Given the while loops in `removeMultiples()`, which has O(n) complexity, and `countMultiples()` inside it that also runs to O(n), the overall complexity (due to nested loops) is **O(n)**.
+
+- `evenOddSplit()` : **O(n)**
+    - The operation inisde this method that takes the worst time complexity is 
+    ``` while (head){
+            if (index % 2 == 0){
+                even->append(head->value);
+            } 
+            else {
+                odd->append(head->value);
+            }
+            deleteAtHead();
+            ++index;
+        }
+    ```
+    - Hence the runtime complexity for `evenOddSplit()` is O(n).
+- `reverseList()` : O(n)
+    - Similar to `evenOddSplit()`, the below while loop inside the function causes the time complexity of O(n):
+    ```
+    while(curr){
+      next = curr->next;
+      curr->next = prev;
+      prev = curr;
+      curr = next;
+    }
+    ```
+    - Since this command loops through every node in the list and reassign its pointers, the time complexity of this while loop is O(n).
+
+***Helper Functions***:
+
+- `printMenu()` : **O(1)**, since every command in the function is print line that only takes constant run time
+- `createList()`: **O(1)**, because even though inside the function the `printList()` method was called to print the contents of the new list (which loops through and print names and values of each node in the list), there always only one node that the new list was intialized with, hence the while loop inside `printList()` for that particular case only runs once, and `createList()` itself will only be used once for initializing the list at the beginnning of the program, so I'd say it runs to O(1) instead of O(n).
+- `executeCommands()`: **O(n^2)**, since in the worst case scenario, the user will choose the input `11` to remove duplicate nodes in the list, which jumps to `case 11` of the switch-case statement inside the `executeCommands()` function, and inside `case 11`, `removeMultiples()` is called. Since `removeMultiples()` runs to O(n^2) and is inside `executeCommands()`, this function runs to O(n^2).
+- `deleteNode()`: **O(1)**; every statement inside the function runs to constant time.
+- `removeMultiplesOf()`: **O(n)**; the function has a while loop to test every node in the linked list that has matching data as the given `T* data` argument, which runs to O(n).
+- `insertAfter()`: **O(1)**; every statement inside the function runs to constant time.
+- `moveAfter()`: **O(1)**;  every statement inside the function runs to constant time.
