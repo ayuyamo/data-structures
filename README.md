@@ -10,7 +10,7 @@
 The programming assignment is built on implementing the LIST ADT using a Doubly Linked List.
 Use the `DLLTemplate` provided along with this project as a starting point.
 
-#### Adding methods
+### Adding methods
 **Add & implement the following methods, according to the given definitions, to the `DoubleLinkedList` Class:**
 1. Add all **Delete** Methods:
 -  `void deleteAtHead()`: prints then deletes the head of the list.
@@ -32,22 +32,22 @@ from the original list and the original list needs to be deleted after the split
 - Print both lists.
 6. `void reverseList()`: Reverse the doubly Linked List. Print reversed list.
 
-#### Inside the main program
+### Inside the main program
 The Main Program should execute as follows:
 1. Display a Menu for the user that loops infinitely till the exit, Split List or Delete List Option is
 Chosen. User chooses a menu option. The “how” is your choice.
 2. Menu is as follows; each option calls the corresponding function of the list.
-- Create a List (optional; I created an empty list before presenting the Menu to users)
-- Delete a List
-- Insert at Head
-- Insert at Tail
-- Insert at Index
-- Delete at Head
-- Delete at Tail
-- Delete at Index
-- Reverse List
-- Sort List
-- Count Multiples
-- Delete Multiples
-- Split List Even Odd
-- Exit
+    - Create a List (optional; I created an empty list before presenting the Menu to users)
+    - Delete a List
+    - Insert at Head
+    - Insert at Tail
+    - Insert at Index
+    - Delete at Head
+    - Delete at Tail
+    - Delete at Index
+    - Reverse List
+    - Sort List
+    - Count Multiples
+    - Delete Multiples
+    - Split List Even Odd
+    - Exit
