@@ -49,6 +49,12 @@ public:
     length = 1;
   }
 
+  DoubleLinkedList(){
+    head = nullptr;
+    tail = nullptr;
+    length = 0;
+  }
+
   // Destructor
   ~DoubleLinkedList() {
     Node<T> *temp = head;
@@ -286,6 +292,7 @@ public:
       }
       temp = temp->next;
     }
+    cout << "List after removing multiples: " << endl;
     printList();
   }
 
@@ -338,23 +345,25 @@ public:
   }
 
   void evenOddSplit(){
-    int index;
-    DoubleLinkedList<T> *even = new DoubleLinkedList<T>(head->value);
-    deleteAtHead();
-    DoubleLinkedList<T> *odd = new DoubleLinkedList<T>(head->value);
-    deleteAtHead();
-    
-    index = 2;
-    while (head){
-      if (index % 2 == 0){
-        even->append(head->value);
-      } 
-      else {
-        odd->append(head->value);
-      }
-      deleteAtHead();
-      ++index;
+    int index = 0;
+    if (length == 0){
+      cout << "Empty list -- not enough nodes to split" << endl;
+      return;
     }
+
+    DoubleLinkedList<T> *even = new DoubleLinkedList<T>();
+    DoubleLinkedList<T> *odd = new DoubleLinkedList<T>();
+
+    while (head){
+        if (index % 2 == 0){
+          even->append(head->value);
+        } 
+        else {
+          odd->append(head->value);
+        }
+        deleteAtHead();
+        ++index;
+      }
     cout << "----------------------------" << endl;
     cout << "Even Linked List:" << endl;
     even->printList();
@@ -364,18 +373,18 @@ public:
   }
 
   void reverseList(){
+    Node<T> *temp = head;
+
     Node<T> *curr = head;
     Node<T> *prev = nullptr;
     Node<T> *next = nullptr;
-
-    Node<T> *temp = head;
     while(curr){
       next = curr->next;
       curr->next = prev;
+      curr->prev = next;
       prev = curr;
       curr = next;
     }
-
     head = tail;
     tail = temp;
     printList();
@@ -455,12 +464,11 @@ public:
         cin >> val;
         data = new Data(val, name);
         cout << "# of multiples of data with ";
-        cout << "name " << name << "and ";
+        cout << "name " << name << " and ";
         cout << "value " << val << " is ";
         cout << countMultiples(data) << endl;
         break;
       case 11:
-        cout << "List after removing multiples: " << endl;
         removeMultiples();
         break;
       case 12:
@@ -514,22 +522,20 @@ public:
 int main() {
 
   int userInput = 1;
-  string menuDisplay;
-  DoubleLinkedList<Data> *dll = createList();
+  // DoubleLinkedList<Data> *dll = createList();
+    DoubleLinkedList<Data> *dll = new DoubleLinkedList<Data>();
 
   while(userInput >= 1 && userInput <= 13){
     printMenu();
     cin >> userInput;
     cout << "----------------------------" << endl;
-    if (userInput >= 1 && userInput <= 13)
-      dll->executeCommands(userInput);
-    else {
-        cout << "Invalid option: " << userInput << endl;  
-        while (userInput < 1 || userInput > 13) {
-          cout << "Pick a number between 1 and 13: ";
-          cin >> userInput;
-        }
+    if (userInput < 1 || userInput > 13)
+      cout << "Invalid option: " << userInput << endl;  
+      while (userInput < 1 || userInput > 13) {
+        cout << "Pick a number between 1 and 13: ";
+        cin >> userInput;
     }
+    dll->executeCommands(userInput);
 
     if (userInput == 13)
       break;
