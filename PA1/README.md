@@ -1,8 +1,8 @@
 # Programming Assignment 1 Methods Explained
 
-- **Project Name**: Programming Assignment 1
-- **Author**: Quynh Anh N Do (Halie Do)
-- **File Structure of the project submitted**: 
+- ***Project Name***: Programming Assignment 1
+- ***Author***: Quynh Anh N Do (Halie Do)
+- ***File Structure of the project submitted***: 
     - A zip file named "Halie_Do.zip" containing:
         - DoubleLinkedList.cpp
         - README.pdf
