@@ -65,6 +65,11 @@
         head = tail;
         tail = temp; //temp was the previous head node before the reversing process was executed
     ```
+
+    ***Access Functions:***
+    - `getValue()` (in `Node` class): Since the value address the `node` pointer points to is a `private` member, this `get()` function provides the node access to other `get()` methods inside the class of the node's `value` object. 
+    - `getValue()` (in `Data` class): returns the `int value` of the `Data` object (since `value` field is a `private` member and direct access is not allowed)
+    - `getName()` (in `Data` class): returns the `string name` of the `Data` object (since `name` field is a `private` member and direct access is not allowed)
     
 
 ### Runtime Complexity of each function
@@ -95,7 +100,7 @@
         }
     ```
     - Hence the runtime complexity for `evenOddSplit()` is O(n).
-- `reverseList()` : O(n)
+- `reverseList()` : **O(n)**
     - Similar to `evenOddSplit()`, the below while loop inside the function causes the time complexity of O(n):
     ```
         while(curr){
@@ -115,8 +120,7 @@
 - `removeMultiplesOf()`: **O(n)**; the function has a while loop to test every node in the linked list that has matching data as the given `T* data` argument, which runs to O(n).
 - `insertAfter()`: **O(1)**; every statement inside the function runs to constant time.
 - `moveAfter()`: **O(1)**;  every statement inside the function runs to constant time.
-*Access Functions*:
-- `getValue()` (in `Node` class): Since the value address the `node` pointer points to is a `private` member, this `get()` function provides the node access to other `get()` methods inside the class of the node's `value` object. 
-- `getValue()` (in `Data` class): returns the `int value` of the `Data` object (since `value` field is a `private` member and direct access is not allowed)
-- `getName()` (in `Data` class): returns the `string name` of the `Data` object (since `name` field is a `private` member and direct access is not allowed)
+- `getValue()` (in `Node` class): **O(1)**; has one `return` statement that runs to **O(1)**.
+- `getValue()` (in `Data` class): **O(1)**; has one `return` statement that runs to **O(1)**.
+- `getName()` (in `Data` class): **O(1)**; has one `return` statement that runs to **O(1)**.
 
