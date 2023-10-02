@@ -90,10 +90,10 @@
     ``` 
         while (head){
             if (index % 2 == 0){
-                even->append(head->value);
+                even->append(head->getValue());
             } 
             else {
-                odd->append(head->value);
+                odd->append(head->getValue());
             }
             deleteAtHead();
             ++index;
