@@ -6,9 +6,10 @@ using namespace std;
 
 // Data Class : Holds all the data that goes inside the Node
 class Data {
-public:
+private:
   int value;
   string name;
+public:
   Data(int value, string name) {
     this->value = value;
     this->name = name;
@@ -17,12 +18,21 @@ public:
     cout << value << " ";
     cout << name << " " << endl;
   }
+
+  int getValue(){
+    return this->value;
+  }
+
+  string getName(){
+    return this->name;
+  }
 };
 
 // Node Class : Node for the LinkedList
 template <typename T> class Node {
-public:
+private:
   T *value;
+public:
   Node<T> *next;
   Node<T> *prev;
   Node(T *value) {
@@ -31,6 +41,10 @@ public:
     prev = nullptr;
   }
   void print() { value->print(); }
+  T *getValue(){
+    return value;
+  }
+
 };
 
 // LinkedList Class : Container for Nodes
@@ -234,9 +248,9 @@ public:
       Node<T> *next1 = currNode->next;
       Node<T> *prev1 = currNode->prev;
 
-      while(prev1 && prev1->value->value > currNode->value->value)
-        prev1 = prev1->prev;
-      moveAfter(currNode, prev1);
+    while(prev1 && prev1->getValue()->getValue() > currNode->getValue()->getValue())
+      prev1 = prev1->prev;
+    moveAfter(currNode, prev1);
 
       currNode = next1;
     }
@@ -285,8 +299,8 @@ public:
   void removeMultiples(){
     Node<T>* temp = head; 
     while(temp){
-      if (countMultiples(temp->value) > 1){   
-        removeMultiplesOf(temp->value); 
+      if (countMultiples(temp->getValue()) > 1){   
+        removeMultiplesOf(temp->getValue()); 
         temp = head;
         continue;
       }
@@ -299,7 +313,7 @@ public:
   void removeMultiplesOf(T* data){
     Node<T> *temp = head;
     while (temp){
-      if (temp->value->value == data->value && temp->value->name == data->name) {
+      if (temp->getValue()->getValue() == data->getValue() && temp->getValue()->getName() == data->getName()) {
         Node<T> *nextNode = temp->next;
         deleteNode(temp);
         temp = nextNode;
@@ -336,7 +350,7 @@ public:
     int count = 0;
     Node<T> *temp = head;
     while(temp){
-      if (temp->value->value == data->value && temp->value->name == data->name){
+      if (temp->getValue()->getValue() == data->getValue() && temp->getValue()->getName() == data->getName()){
         ++count;
       }
       temp = temp->next;
@@ -356,10 +370,10 @@ public:
 
     while (head){
         if (index % 2 == 0){
-          even->append(head->value);
+          even->append(head->getValue());
         } 
         else {
-          odd->append(head->value);
+          odd->append(head->getValue());
         }
         deleteAtHead();
         ++index;

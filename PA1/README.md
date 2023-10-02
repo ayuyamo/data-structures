@@ -45,7 +45,7 @@
     - `deleteAtIndex()`: checks if index is valid (between `0` and `length - 1`), otherwise it simply executes `return;` and does not delete any node. If `index` is `0`, it calls `deleteAtHead()`, if `index` is `length - 1` then it calls `deleteAtTail()`. Otherwise, three new node pointers `prev1`, `temp` and `next1` will be created and assigned pointers to the node before the index, the node at the index, and the node right after the index, respectively. `prev1`'s `next` pointer will point to `next1`, and `next1`'s `prev` pointer points to `prev1`, which updates all the necessary pointers before deleting the node at the specified index. `temp` is printed and then deleted at the end. `length` is decremented since a node was deleted from the list.
     - `sortList()`: create three pointers `currNode` as `head->next`, `prev1` as `head` and `next1`as `currNode->next`. Then the following while loop finds the **first** node in the list whose `value` is smaller than `currNode`'s:
     ```
-        while(prev1 && prev1->value->value > currNode->value->value)
+        while(prev1 && prev1->getValue()->getValue() > currNode->getValue()->getValue())
             prev1 = prev1->prev;
     ```
     Once the "smallest" `prev1` node was found, `moveAfter()` was called to insert `currNode` behind the respective `prev1` node. After the insertion was completed, the sorting process begins again with the node after the `currNode` (`next1`) and repeats until every node is sorted. At the end, the new sorted list is printed. 
@@ -73,7 +73,7 @@
 - `deleteAtIndex()`: **O(n)** (When getting the previous node of the node to delete, the command `Node<T> *prev1 = get(index - 1);` calls to `get()` method that runs to the **O(n)** complexity)
 - `sortList()` : **O(n)** 
     ``` 
-        while(prev1 && prev1->value->value > currNode->value->value)
+        while(prev1 && prev1->getValue()->getValue() > currNode->getValue()->getValue())
             prev1 = prev1->prev;
     ```
     - The above command makes the worst run time complexity for this method O(n) by taking into account the possibility that `currNode` (when being the last node in the list) while be compared to every other (previous) node in the list to find the smallest `prev1` node value to insert `currNode` after (or `currNode` itself might be the node with smallest values and be prepended to the list)
@@ -115,3 +115,8 @@
 - `removeMultiplesOf()`: **O(n)**; the function has a while loop to test every node in the linked list that has matching data as the given `T* data` argument, which runs to O(n).
 - `insertAfter()`: **O(1)**; every statement inside the function runs to constant time.
 - `moveAfter()`: **O(1)**;  every statement inside the function runs to constant time.
+*Access Functions*:
+- `getValue()` (in `Node` class): Since the value address the `node` pointer points to is a `private` member, this `get()` function provides the node access to other `get()` methods inside the class of the node's `value` object. 
+- `getValue()` (in `Data` class): returns the `int value` of the `Data` object (since `value` field is a `private` member and direct access is not allowed)
+- `getName()` (in `Data` class): returns the `string name` of the `Data` object (since `name` field is a `private` member and direct access is not allowed)
+
