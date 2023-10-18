@@ -42,7 +42,8 @@ template <typename T> class LLStack {
 private:
     Node<T> *top;
     int stackSize;
-    const int SMAXITEMS;
+    const int SMAXITEMS = 20;
+
 public:
     //Contrustor
     LLStack(){
@@ -54,19 +55,34 @@ public:
         top = newNode;
         stackSize = 1;
     }
+    //Destructor
+    ~LLStack() {
+        Node<T> *temp = top;
+        while (top) {
+            top = top->nextNode;
+            delete temp;
+            temp = top;
+        }
+    }
     bool isFull(){
         return stackSize == SMAXITEMS;
     }
     bool isEmpty(){
         return stackSize == 0;
     }
-    void push(T *item){
+    int getSize(){
+        return stackSize;
+    }
+    void push(T *item) {
         Node<T> *newNode = new Node<T>(item);
         if (stackSize == 0) {
-        top = newNode;
+            top = newNode;
+        } else if (stackSize == SMAXITEMS){
+            cout << "Stack full: Cannot insert items" << endl;
+            return;
         } else {
-        newNode->nextNode = top;
-        top = newNode;
+            newNode->nextNode = top;
+            top = newNode;
         }
         stackSize++;
     }
@@ -85,41 +101,118 @@ public:
     T* peek(){
         return top->data;
     }
+    void deleteAll(){
+        while (top) {
+            pop();
+        } 
+    }
+    void print(){
+        Node<T> *temp = top;
+        while (temp != nullptr) {
+            temp->print();
+            temp = temp->nextNode;
+        }
+    }
 };
 
 template <typename T> class StackQ {
 private:
     LLStack<T> *enQStack;
     LLStack<T> *deQStack;
+    LLStack<T> *temp;
     int queueSize;
-    const int QMAXITEMS;
-
+    const int QMAXITEMS = 20;
+public:
     //Contructors
     StackQ(){
-        enQStack = nullptr;
-        deQStack = nullptr;
+        enQStack = new LLStack<T>();
+        deQStack = new LLStack<T>();
+        temp = new LLStack<T>();
         queueSize = 0;
     }
-    StackQ(LLStack<T> *stack){//FIXME
-        enQStack = stack;
-        deQStack = stack;
-        queueSize = 1;
+    //Destructor
+    ~StackQ() {
+        enQStack->deleteAll();
+        deQStack->deleteAll();
     }
-public:
-    bool isEmpty(){
-        return queueSize == 0;
-    }
-    bool isFull(){
-        return queueSize == QMAXITEMS;
-    }
+    bool isEmpty() { return queueSize == 0; }
+    bool isFull() { return queueSize == QMAXITEMS; }
     void enqueue(T* item){
         enQStack->push(item);
+        queueSize++;
+    }
+    void makeDeQStack(LLStack<T> *current, LLStack<T> *inverse){
+        while(!current->isEmpty()){
+            inverse->push(current->peek());
+            current->pop();
+        }
     }
     void dequeue(){
-        deQStack->pop();
+        if (deQStack->isEmpty()) {
+            makeDeQStack(enQStack, deQStack);
+        } 
+        deQStack->pop();     
+        queueSize--;
     }
     T* peek(){
+        if (deQStack->isEmpty())
+            makeDeQStack(enQStack, deQStack);
         return deQStack->peek();
+    }
+    void print(){
+        while (!deQStack->isEmpty()){
+            temp->push(deQStack->peek());
+            deQStack->pop();
+        }
+        makeDeQStack(enQStack, deQStack);
+        makeDeQStack(temp, deQStack);
+        deQStack->print();
+
+    }
+    void executeCommands(int option){
+        string name;
+        string code;
+        TicketItem *data;
+        switch(option){
+            case 1:
+                cout << "Enter person name: ";
+                cin >> name;
+                cout << "Enter reserve code: ";
+                cin >> code;
+                data = new TicketItem(name, code);
+                enqueue(data);
+                cout << "Updated ticket queue:" << endl;
+                print();
+                break;
+            case 2:
+                dequeue();
+                cout << "------------------------------------" << endl;
+                cout << "Updated ticket queue:" << endl;
+                print();
+                break;
+            case 3:
+                cout << "First item in queue: ";
+                data = peek();
+                data->print();
+                break;
+            case 4:
+                cout << "Ticket queue:" << endl;
+                print();
+                break;
+            case 5:
+                cout << "Ticket queue size: " << queueSize << endl;
+                break;
+            case 6:
+                cout << "enQStack:" << endl;
+                enQStack->print();
+                cout << "------------------------------------" << endl;
+                cout << "deQStack:" << endl;
+                deQStack->print();
+                break;
+            case 7:
+                cout << "Starting to exit program..." << endl;
+                return;
+        }
     }
 };
 
@@ -137,5 +230,27 @@ void displayMenu(){
 }
 
 int main(){
+    int input = 1;
+    StackQ<TicketItem> *ticketQueue = new StackQ<TicketItem>();
+    while(input >= 1 && input <= 7){
+        displayMenu();
+        cin >> input;
+        cout << "------------------------------------" << endl;
+        if (input < 1 || input > 7) {
+            cout << "Invalid option: " << input << endl;  
+            while (input < 1 || input > 7) {
+                cout << "Pick a number between 1 and 7: ";
+                cin >> input;
+            }
+        }
+        ticketQueue->executeCommands(input);
+        if (input == 7) {
+            delete ticketQueue;
+            cout << "Queue successfully deleted" << endl;
+            break;
+        }
+    }
+
+    cout << "Program exited" << endl;
     return 0;
 }
