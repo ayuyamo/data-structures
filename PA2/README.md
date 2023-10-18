@@ -7,7 +7,7 @@
     - list and describe the function / usage of every variable, constructor and method.
 
 ## Classes
-### TicketItem
+### *TicketItem*
 - **Fields (private):**
     - `string personName`
     - `string reserveCode`
@@ -34,7 +34,7 @@
     }
 ```
 - `void print()`
-### LLStack
+### *LLStack* (Template)
 - **Fields (private):**
     - `Node<T> *top`
     - `int stackSize`
@@ -71,7 +71,7 @@
 - `void deleteAll()`
 - `void print()`
 
-### StackQ (Template)
+### *StackQ* (Template)
 
 - **Fields (private):**
     - `LLStack<T> *enQStack`
