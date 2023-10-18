@@ -1,4 +1,5 @@
 #include <iostream>
+#include <string>
 #include <vector>
 #include <algorithm>
 
@@ -70,14 +71,11 @@ public:
     bool isEmpty(){
         return stackSize == 0;
     }
-    int getSize(){
-        return stackSize;
-    }
     void push(T *item) {
         Node<T> *newNode = new Node<T>(item);
-        if (stackSize == 0) {
+        if (isEmpty()) {
             top = newNode;
-        } else if (stackSize == SMAXITEMS){
+        } else if (isFull()){
             cout << "Stack full: Cannot insert items" << endl;
             return;
         } else {
@@ -135,11 +133,22 @@ public:
         enQStack->deleteAll();
         deQStack->deleteAll();
     }
-    bool isEmpty() { return queueSize == 0; }
-    bool isFull() { return queueSize == QMAXITEMS; }
+    bool isEmpty() { return queueSize == 0;}
+    bool isFull() { return queueSize == QMAXITEMS;}
+    int getSize() { return queueSize;}
+    LLStack<T> *getEnQPointer() { return enQStack;}
+    LLStack<T> *getDeQPointer() { return deQStack;}
     void enqueue(T* item){
-        enQStack->push(item);
-        queueSize++;
+        if (!isFull()){
+             enQStack->push(item);
+            queueSize++;
+        } else {
+            cout << "Queue full: Cannot insert more items" << endl;
+            cout << "------------------------------------" << endl;
+            cout << "Item not inserted: ";
+            item->print();
+            cout << endl;
+        }
     }
     void makeDeQStack(LLStack<T> *current, LLStack<T> *inverse){
         while(!current->isEmpty()){
@@ -167,54 +176,58 @@ public:
         makeDeQStack(enQStack, deQStack);
         makeDeQStack(temp, deQStack);
         deQStack->print();
-
-    }
-    void executeCommands(int option){
-        string name;
-        string code;
-        TicketItem *data;
-        switch(option){
-            case 1:
-                cout << "Enter person name: ";
-                cin >> name;
-                cout << "Enter reserve code: ";
-                cin >> code;
-                data = new TicketItem(name, code);
-                enqueue(data);
-                cout << "Updated ticket queue:" << endl;
-                print();
-                break;
-            case 2:
-                dequeue();
-                cout << "------------------------------------" << endl;
-                cout << "Updated ticket queue:" << endl;
-                print();
-                break;
-            case 3:
-                cout << "First item in queue: ";
-                data = peek();
-                data->print();
-                break;
-            case 4:
-                cout << "Ticket queue:" << endl;
-                print();
-                break;
-            case 5:
-                cout << "Ticket queue size: " << queueSize << endl;
-                break;
-            case 6:
-                cout << "enQStack:" << endl;
-                enQStack->print();
-                cout << "------------------------------------" << endl;
-                cout << "deQStack:" << endl;
-                deQStack->print();
-                break;
-            case 7:
-                cout << "Starting to exit program..." << endl;
-                return;
-        }
     }
 };
+
+void executeCommands(StackQ<TicketItem> *queue ,int option){
+    TicketItem *data;
+    string firstName;
+    string lastName;
+    string fullName;
+    string code;
+    switch(option){
+        case 1:
+            cout << "Enter person's name: ";
+            cin >> firstName;
+            cin >> lastName;
+            fullName = firstName + " " + lastName;
+            cout << "Enter reserve code: ";
+            cin >> code;
+            data = new TicketItem(fullName, code);
+            queue->enqueue(data);
+            cout << "Updated ticket queue:" << endl;
+            queue->print();
+            break;
+        case 2:
+            queue->dequeue();
+            cout << "------------------------------------" << endl;
+            cout << "Updated ticket queue:" << endl;
+            queue->print();
+            break;
+        case 3:
+            cout << "First item in queue: ";
+            data = queue->peek();
+            data->print();
+            break;
+        case 4:
+            cout << "Ticket queue:" << endl;
+            queue->print();
+            break;
+        case 5:
+            cout << "Ticket queue size: " << queue->getSize() << endl;
+            break;
+        case 6:
+            cout << "enQStack:" << endl;
+            queue->getEnQPointer()->print();
+            cout << "------------------------------------" << endl;
+            cout << "deQStack:" << endl;
+            queue->getDeQPointer()->print();
+            break;
+        case 7:
+            cout << "Starting to exit program..." << endl;
+            return;
+    }
+}
 
 void displayMenu(){
     cout << "================Menu================" << endl;
@@ -226,24 +239,28 @@ void displayMenu(){
     cout << "    6.Display enQStack & deQStack   " << endl;
     cout << "              7.Exit                " << endl;
     cout << "====================================" << endl;
-    cout << "Pick an option: "; 
 }
 
 int main(){
     int input = 1;
+    bool validInput = false;
     StackQ<TicketItem> *ticketQueue = new StackQ<TicketItem>();
     while(input >= 1 && input <= 7){
         displayMenu();
-        cin >> input;
-        cout << "------------------------------------" << endl;
-        if (input < 1 || input > 7) {
-            cout << "Invalid option: " << input << endl;  
-            while (input < 1 || input > 7) {
-                cout << "Pick a number between 1 and 7: ";
-                cin >> input;
+        do {
+            cout << "Pick an option: ";
+            cin >> input;
+            if (input < 1 || input > 7 || cin.fail()) {
+                cout << "Invalid input. Please enter a valid integer (between 1 and 7):" << endl;
+                cin.clear();  // Clear the error flag
+                cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Discard any invalid input
+            } else {
+                cout << "------------------------------------" << endl;
+                validInput = true;
             }
-        }
-        ticketQueue->executeCommands(input);
+        } while (!validInput);
+
+        executeCommands(ticketQueue, input);
         if (input == 7) {
             delete ticketQueue;
             cout << "Queue successfully deleted" << endl;
