@@ -14,12 +14,8 @@ public:
         this->personName = name;
         this->reserveCode = code;
     }
-    string getPersonName(){
-        return this->personName;
-    }
-    string getReserveCode(){
-        return this->reserveCode;
-    }
+    string getPersonName(){ return this->personName;}
+    string getReserveCode(){ return this->reserveCode;}
     void print() {
         cout << this->personName << " ";
         cout << this->reserveCode << " " << endl;
@@ -65,12 +61,8 @@ public:
             temp = top;
         }
     }
-    bool isFull(){
-        return stackSize == SMAXITEMS;
-    }
-    bool isEmpty(){
-        return stackSize == 0;
-    }
+    bool isFull(){ return stackSize == SMAXITEMS;}
+    bool isEmpty(){ return stackSize == 0;}
     void push(T *item) {
         Node<T> *newNode = new Node<T>(item);
         if (isEmpty()) {
