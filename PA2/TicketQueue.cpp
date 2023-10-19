@@ -16,11 +16,11 @@ public:
         this->personName = name;
         this->reserveCode = code;
     }
-    //Destructor
-    ~TicketItem(){
-        personName = nullptr;
-        reserveCode = nullptr;
-    }
+    // //Destructor
+    // ~TicketItem(){
+    //     personName = nullptr;
+    //     reserveCode = nullptr;
+    // }
     string getPersonName(){ return this->personName;}
     string getReserveCode(){ return this->reserveCode;}
     void print() {
@@ -39,10 +39,10 @@ public:
         this->data = value;
         nextNode = nullptr;
     }
-    ~Node(){
-        data = nullptr;
-        nextNode = nullptr;
-    }
+    // ~Node(){
+    //     data = nullptr;
+    //     nextNode = nullptr;
+    // }
     void print() { data->print(); }
 };
 
