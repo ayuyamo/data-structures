@@ -152,11 +152,18 @@
     - `T* peek()`: returns a `T*` object pointer to the data object of the node to be deleted from the queue upon `dequeue()` being called.
     - `void print()`: iterates through and prints all items in the queue (the order that items were inserted, not the stack order). To do that, `deQStack` is printed (taking items from `enQStack` and using `temp` to organize the order of items) so that inside the terminal the queue is display from the first item inserted to the last item inserted. 
 
-## Non-member functions
+## Global functions & variables
 
 - `void executeCommands(StackQ<TicketItem> *queue ,int option)`: This is a helper function that takes two parameters, one is an empty queue pointer (already initiated inside `main()`) and other is the `option` user picked from the menu. There is a switch-case statement inside the function that execute commands to perform operations according to the user's option (`add/delete` item, `peek`, `display queue` etc.), and access the needed functions from `QStack` class to perform those operations using the `QStack` object pointer (the first argument). 
 
 - `void displayMenu()`: This is a helper function that uses `cout` commands to print the list of operations user can pick from to modify & read contents of the queue. 
+
+- `string getName()`: This function is called in `executeCommands()` function `case 1` (user wants to add item into queue) which prints string prompting user input for person's first & last name and returns the full name. This returned `string` value will then be passed as `first parameter` in `TicketItem` class to set value for the class's member variable `personName`. 
+
+- `random_device rd`: This line creates an instance of the random_device class named `rd`
+- `mt19937 gen(rd())`: This line creates an instance of the `Mersenne Twister` pseudo-random number generator named `gen`. `mt19937` is a pseudo-random number generator that generates random 32-bit integers. `rd()` generates the seed for the `Mersenne Twister`. These variables are used by `genReserveCode()` function to generate random `int` converted to `string` values to be passed into `TicketItem` class's member variable `reserveCode`. 
+
+- `string genReserveCode()`: This function returns a randomly generated 8-digit `string` value (generate a random `int`, then covert it to `string` and return the `string` value) representing the reserve code for `TicketItem` class. This function will also be called inside `executeCommands` function `case 1` and its return value will be passed as the `second parameter` to initialize the new `TicketItem` object's member variable `reserveCode`. 
 
 ## `main()`
 - `int input`: This variable will hold an `int` value reprsenting number option the user picked from the queue menu. Initialized with `1` so that it enters the while loop.
