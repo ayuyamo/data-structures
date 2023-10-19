@@ -10,9 +10,15 @@ private:
     string personName;
     string reserveCode;
 public:
+    //Constructor
     TicketItem(string name, string code){
         this->personName = name;
         this->reserveCode = code;
+    }
+    //Destructor
+    ~TicketItem(){
+        personName = nullptr;
+        reserveCode = nullptr;
     }
     string getPersonName(){ return this->personName;}
     string getReserveCode(){ return this->reserveCode;}
@@ -25,14 +31,18 @@ public:
 // Node Class : Node for the Stack Linked List
 template <typename T> class Node {
 public:
-  T *data;
-  Node<T> *nextNode;
+    T *data;
+    Node<T> *nextNode;
 
-  Node(T *value) {
-    this->data = value;
-    nextNode = nullptr;
-  }
-  void print() { data->print(); }
+    Node(T *value) {
+        this->data = value;
+        nextNode = nullptr;
+    }
+    ~Node(){
+        data = nullptr;
+        nextNode = nullptr;
+    }
+    void print() { data->print(); }
 };
 
 template <typename T> class LLStack {
@@ -151,8 +161,11 @@ public:
     void dequeue(){
         if (deQStack->isEmpty()) {
             makeDeQStack(enQStack, deQStack);
-        } 
-        deQStack->pop();     
+        }
+        T *temp = deQStack->peek(); 
+        deQStack->pop();  
+        cout << "Item deleted: ";
+        temp->print();
         queueSize--;
     }
     T* peek(){
@@ -187,14 +200,14 @@ void executeCommands(StackQ<TicketItem> *queue ,int option){
             cin >> code;
             data = new TicketItem(fullName, code);
             queue->enqueue(data);
-            cout << "Updated ticket queue:" << endl;
-            queue->print();
+            // cout << "Updated ticket queue:" << endl;
+            // queue->print();
             break;
         case 2:
             queue->dequeue();
-            cout << "------------------------------------" << endl;
-            cout << "Updated ticket queue:" << endl;
-            queue->print();
+            // cout << "------------------------------------" << endl;
+            // cout << "Updated ticket queue:" << endl;
+            // queue->print();
             break;
         case 3:
             cout << "First item in queue: ";
