@@ -2,6 +2,7 @@
 #include <string>
 #include <vector>
 #include <algorithm>
+#include <random>
 
 using namespace std;
 
@@ -23,8 +24,8 @@ public:
     string getPersonName(){ return this->personName;}
     string getReserveCode(){ return this->reserveCode;}
     void print() {
-        cout << this->personName << " ";
-        cout << this->reserveCode << " " << endl;
+        cout << "Person's name: " << this->personName << " - ";
+        cout << "Reserve code: " << this->reserveCode << " " << endl;
     }
 };
 
@@ -145,11 +146,10 @@ public:
              enQStack->push(item);
             queueSize++;
         } else {
-            cout << "Queue full: Cannot insert more items" << endl;
             cout << "------------------------------------" << endl;
-            cout << "Item not inserted: ";
-            item->print();
-            cout << endl;
+            cout << "Warnings: Queue FULL -- Cannot insert more items" << endl;
+            cout << "------------------------------------" << endl;
+            cout << "Item not inserted: " << item->getPersonName() << endl;
         }
     }
     void makeDeQStack(LLStack<T> *current, LLStack<T> *inverse){
@@ -162,11 +162,15 @@ public:
         if (deQStack->isEmpty()) {
             makeDeQStack(enQStack, deQStack);
         }
-        T *temp = deQStack->peek(); 
-        deQStack->pop();  
-        cout << "Item deleted: ";
-        temp->print();
-        queueSize--;
+        if (deQStack->isEmpty()) {
+            cout << "Warnings: Queue EMPTY -- Cannot delete items" << endl;
+        } else {
+            T *temp = deQStack->peek(); 
+            deQStack->pop();  
+            cout << "Item deleted: ";
+            temp->print();
+            queueSize--;
+        }
     }
     T* peek(){
         if (deQStack->isEmpty())
@@ -184,20 +188,37 @@ public:
     }
 };
 
-void executeCommands(StackQ<TicketItem> *queue ,int option){
-    TicketItem *data;
+
+random_device rd;
+mt19937 gen(rd());
+
+string genReserveCode(){
+    uniform_int_distribution<int> dis(10000000, 99999999);
+    int random_number = dis(gen);
+
+    return to_string(random_number);
+}
+
+string getName(){
     string firstName;
     string lastName;
+
+    cout << "Enter person's first name: ";
+    cin >> firstName;
+    cout << "Enter person's last name: ";
+    cin >> lastName;
+
+    return firstName + " " + lastName;
+}
+
+void executeCommands(StackQ<TicketItem> *queue ,int option){
+    TicketItem *data;
     string fullName;
     string code;
     switch(option){
         case 1:
-            cout << "Enter person's name: ";
-            cin >> firstName;
-            cin >> lastName;
-            fullName = firstName + " " + lastName;
-            cout << "Enter reserve code: ";
-            cin >> code;
+            fullName = getName();
+            code = genReserveCode();
             data = new TicketItem(fullName, code);
             queue->enqueue(data);
             // cout << "Updated ticket queue:" << endl;
