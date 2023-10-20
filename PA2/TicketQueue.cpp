@@ -16,11 +16,9 @@ public:
         this->personName = name;
         this->reserveCode = code;
     }
-    // //Destructor
-    // ~TicketItem(){
-    //     personName = nullptr;
-    //     reserveCode = nullptr;
-    // }
+    //Destructor
+    ~TicketItem(){
+    }
     string getPersonName(){ return this->personName;}
     string getReserveCode(){ return this->reserveCode;}
     void print() {
@@ -39,10 +37,10 @@ public:
         this->data = value;
         nextNode = nullptr;
     }
-    // ~Node(){
-    //     data = nullptr;
-    //     nextNode = nullptr;
-    // }
+    ~Node(){
+        data = nullptr;
+        nextNode = nullptr;
+    }
     void print() { data->print(); }
 };
 
@@ -269,7 +267,7 @@ void displayMenu(){
 
 int main(){
     int input = 1;
-    bool validInput = false;
+    bool validInput;
     StackQ<TicketItem> *ticketQueue = new StackQ<TicketItem>();
     while(input >= 1 && input <= 7){
         displayMenu();
@@ -277,9 +275,10 @@ int main(){
             cout << "Pick an option: ";
             cin >> input;
             if (input < 1 || input > 7 || cin.fail()) {
+                validInput = false;
                 cout << "Invalid input. Please enter a valid integer (between 1 and 7):" << endl;
-                cin.clear();  // Clear the error flag
-                cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Discard any invalid input
+                cin.clear();
+                cin.ignore(numeric_limits<streamsize>::max(), '\n');
             } else {
                 cout << "------------------------------------" << endl;
                 validInput = true;

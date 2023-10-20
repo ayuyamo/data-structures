@@ -3,9 +3,6 @@
 - **Author:** Halie Do (Quynh Anh)
 
 ## Project Structure
-- For each class in the project:
-    - list and describe the function / usage of every variable, constructor and method.
-
 ## Classes
 ### *TicketItem*
 - **Fields (private):**
@@ -45,7 +42,7 @@
     }
 ```
 - **Destructor:**
-    - Not sure what this does yet
+    - If the `Node` object was destroyed or the program exits, `~Node()` will be called and assign this class's member pointers to `nullptr`. This ensures that the pointer does not point to deallocated memory after the `Node` object was destroyed. 
 ```
     ~Node(){
         data = nullptr;
@@ -185,6 +182,7 @@ This `do-while()` loop uses functions accessible with object `cin` to clear erro
         cout << "Pick an option: ";
         cin >> input;
         if (input < 1 || input > 7 || cin.fail()) {
+            validInput = false;
             cout << "Invalid input. Please enter a valid integer (between 1 and 7):" << endl;
             cin.clear();  // Clear the error flag
             cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Discard any invalid input
