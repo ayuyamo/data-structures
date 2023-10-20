@@ -83,19 +83,19 @@
     }
 ```
 - **Methods:**
-- `bool isFull()`: returns a `bool` value indicating whether the stack is full.
+    - `bool isFull()`: returns a `bool` value indicating whether the stack is full.
 
-- `bool isEmpty()`: returns a `bool` value indicating whether the stack is empty.
+    - `bool isEmpty()`: returns a `bool` value indicating whether the stack is empty.
 
-- `void push(T *item)`: takes in a parameter that is pointer to an object of type `T`. This `push()` function creates a node pointer to this data and insert it to the top of the stack. Before pushing the item this function checks if the stack is full, if so then no push action will be done and inside the terminal a warning message will be displayed telling the user that the stack is full and no additional item can be inserted. `stackSize` then will be incremented by `1` because the stack has one more item.
+    - `void push(T *item)`: takes in a parameter that is pointer to an object of type `T`. This `push()` function creates a node pointer to this data and insert it to the top of the stack. Before pushing the item this function checks if the stack is full, if so then no push action will be done and inside the terminal a warning message will be displayed telling the user that the stack is full and no additional item can be inserted. `stackSize` then will be incremented by `1` because the stack has one more item.
 
-- `void pop()`: This function will delete the item atthe top of the stack. Before that it will update the new `top` to be the the current `top`'s `nextNode`. `stackSize` is then decremented by `1` because the stack just popped a value (has one less item). 
+    - `void pop()`: This function will delete the item atthe top of the stack. Before that it will update the new `top` to be the the current `top`'s `nextNode`. `stackSize` is then decremented by `1` because the stack just popped a value (has one less item). 
 
-- `T* peek()`: The function returns a `T` object pointer to the data of the `top` item (node) in the stack. That is, it tells user which item will be taken from the stack if `pop()` was called.
+    - `T* peek()`: The function returns a `T` object pointer to the data of the `top` item (node) in the stack. That is, it tells user which item will be taken from the stack if `pop()` was called.
 
-- `void deleteAll()`: This function iterates through and delete each node in the stack.
+    - `void deleteAll()`: This function iterates through and delete each node in the stack.
 
-- `void print()`: This function iterates through and print each node's data (`personName` and `reserveCode`) in the stack. 
+    - `void print()`: This function iterates through and print each node's data (`personName` and `reserveCode`) in the stack. 
 
 ### *StackQ* (Template)
 
