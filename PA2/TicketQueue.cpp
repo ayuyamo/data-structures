@@ -27,9 +27,6 @@ public:
         cout << "Person's name: " << this->personName << " - ";
         cout << "Reserve code: " << this->reserveCode << " " << endl;
     }
-    TicketItem* duplicateData(){
-      return new TicketItem(this->getPersonName(), this->getReserveCode());
-    }
 };
 
 // Node Class : Node for the Stack Linked List
@@ -98,6 +95,19 @@ public:
         delete temp;
         stackSize--;
     }
+
+    T* returnTop(){
+        if (stackSize == 0)
+            return nullptr;
+        Node<T> *temp = top;
+        if (stackSize == 1) {
+            top = nullptr;
+        } else {
+            top = top->nextNode;
+        }
+        stackSize--;
+        return temp->data;
+    }
     T* peek(){
         return top->data;
     }
@@ -116,7 +126,7 @@ private:
     LLStack<T> *deQStack;
     LLStack<T> *temp;
     int queueSize;
-    const int QMAXITEMS = 15; //has to be the same as SMAXITEMS
+    const int QMAXITEMS = 15; 
 public:
     //Contructors
     StackQ(){
@@ -153,8 +163,7 @@ public:
     }
     void makeReverseStack(LLStack<T> *current, LLStack<T> *inverse){
         while(!current->isEmpty()){
-            inverse->push(current->peek()->duplicateData());
-            current->pop();
+            inverse->push(current->returnTop());
         }
     }
     void dequeue(){

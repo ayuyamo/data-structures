@@ -29,7 +29,6 @@
 - `string getPersonName()`: Fuction returns `string` value of `TicketItem` member variable `personName`.
 - `string getReserveCode()`: Fuction returns `string` value of `TicketItem` member variable `reserveCode`.
 - `void print()`: Upon being called this function prints the `personName` and `reserveCode` values of the  `TicketItem` object (that was used to call `print()`).
-- `TicketItem* duplicateData()`: this function returns a new object with the same `personName` and `reserveCode` values as the current object (the one used by other classes to access this function). This function is used when switching items between different stacks in `StackQ` class because after `pop()` is called, the `data` object of the deleted node will be destroyed, hence trying to access and push it in a different stack generates a compiler error. How it works is this function is called to create an object with duplicate values and push it into the new stack while deleting the old object. 
 ### Node (template)
 - **Fields:**
   - `T *data`: Contains node's data pointer of type `T` (template)
@@ -86,6 +85,8 @@
 
     - `void pop()`: This function will delete the item atthe top of the stack. Before that it will update the new `top` to be the the current `top`'s `nextNode`. `stackSize` is then decremented by `1` because the stack just popped a value (has one less item). 
 
+    - `T* returnTop()`: This is a helper function that works the same way as `pop()` except it does not delete the item. The function is used to move objects between stacks (`enQStack`, `deQStack`, and `temp`) when organizing the queue. When called, the function removes the `top` node from current stack (but not deleted) and returns its `data` object. 
+
     - `T* peek()`: The function returns a `T` object pointer to the data of the `top` item (node) in the stack. That is, it tells user which item will be taken from the stack if `pop()` was called.
 
     - `void print()`: This function iterates through and print each node's data (`personName` and `reserveCode`) in the stack. 
@@ -95,7 +96,7 @@
 - **Fields (private):**
     - `LLStack<T> *enQStack`: This variable holds pointer to the enqueue stack of `StackQ` class. When the program is being executed, if user tries to add item in the queue, the new item will pushed into this stack.
 
-    - `LLStack<T> *deQStack`: This variable holds pointer to the dequeue stack of `StackQ` class. When the program is being executed, if user tries to delete an item (the last node) in the queue, this stack holds the list of items in order that it was pushed, and calls `pop()` to take out the first item that was inserted in the list. How it does this is holding a reversed `enQStack` (by popping each item from  `enQStack`and simultaneously inserting that item to `deQStack`) that correctly reflects the order of items to be deleted from the queue (FIFO) using stack operations (`pop()`).
+    - `LLStack<T> *deQStack`: This variable holds pointer to the dequeue stack of `StackQ` class. When the program is being executed, if user tries to delete an item (the last node) in the queue, this stack holds the list of items in order that it was pushed, and calls `pop()` to take out the first item that was inserted in the list. How it does this is holding a reversed `enQStack` by "popping" each item from  `enQStack` (using `returnTop()` to switch data between stacks) and simultaneously inserting that item to `deQStack` that correctly reflects the order of items to be deleted from the queue (FIFO) using stack operations (`pop()`).
 
     - `LLStack<T> *temp`: This is a temporary stack pointer that holds the extra items in `deQStack` when items were being deleted from `enQStack` and inserted into `deQStack`. This ensures that the order of items inserted into the queue is correct (Further explanation in `Problem definition` section). 
 
