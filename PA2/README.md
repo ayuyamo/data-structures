@@ -195,7 +195,7 @@ This `do-while()` loop uses functions accessible with object `cin` to clear erro
 
 ## Problem Definition
 - Pictorial representation for the `StackQ` class:
-![(pictorial representation of stacks](PA2/img/PA2StackDiagram.png)
+![(pictorial representation of stacks](PA2/img/PA2StackDiagram.png?raw=true)
     - How `enQ()` and `deQ()` functions work with two stacks:
         - When items are added to the queue, the `enqueue()` function calls `push()` to push items into `enQstack`. Hence the stack represents a list of items in descending order (`Last In First Out`).
 
