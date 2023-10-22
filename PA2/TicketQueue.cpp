@@ -18,12 +18,17 @@ public:
     }
     //Destructor
     ~TicketItem(){
+        print();
+        cout << " -- Object deleted" << endl;
     }
     string getPersonName(){ return this->personName;}
     string getReserveCode(){ return this->reserveCode;}
     void print() {
         cout << "Person's name: " << this->personName << " - ";
         cout << "Reserve code: " << this->reserveCode << " " << endl;
+    }
+    TicketItem* duplicateData(){
+      return new TicketItem(this->getPersonName(), this->getReserveCode());
     }
 };
 
@@ -38,6 +43,7 @@ public:
         nextNode = nullptr;
     }
     ~Node(){
+        delete data;
         data = nullptr;
         nextNode = nullptr;
     }
@@ -131,8 +137,13 @@ public:
     }
     //Destructor
     ~StackQ() {
-        enQStack->deleteAll();
-        deQStack->deleteAll();
+        cout << "------------------------------------" << endl;
+        delete enQStack;
+        cout << "enQStack successfully deleted" << endl;
+        cout << "------------------------------------" << endl;
+        delete deQStack;
+        cout << "deQStack successfully deleted" << endl;
+        cout << "------------------------------------" << endl;
     }
     bool isEmpty() { return queueSize == 0;}
     bool isFull() { return queueSize == QMAXITEMS;}
@@ -150,38 +161,46 @@ public:
             cout << "Item not inserted: " << item->getPersonName() << endl;
         }
     }
-    void makeDeQStack(LLStack<T> *current, LLStack<T> *inverse){
+    void makeReverseStack(LLStack<T> *current, LLStack<T> *inverse){
         while(!current->isEmpty()){
-            inverse->push(current->peek());
+            inverse->push(current->peek()->duplicateData());
             current->pop();
         }
     }
     void dequeue(){
         if (deQStack->isEmpty()) {
-            makeDeQStack(enQStack, deQStack);
+            makeReverseStack(enQStack, deQStack);
         }
         if (deQStack->isEmpty()) {
             cout << "Warnings: Queue EMPTY -- Cannot delete items" << endl;
         } else {
-            T *temp = deQStack->peek(); 
             deQStack->pop();  
-            cout << "Item deleted: ";
-            temp->print();
             queueSize--;
         }
     }
     T* peek(){
+        cout << "Moving items from enQStack to deQStack..." << endl;
         if (deQStack->isEmpty())
-            makeDeQStack(enQStack, deQStack);
+            makeReverseStack(enQStack, deQStack);
+        cout << "Successfully pushed all items from enQStack into deQStack" << endl;
+        cout << "************************************" << endl;
+        cout << "First item in queue: " << endl; 
         return deQStack->peek();
     }
     void print(){
-        while (!deQStack->isEmpty()){
-            temp->push(deQStack->peek());
-            deQStack->pop();
-        }
-        makeDeQStack(enQStack, deQStack);
-        makeDeQStack(temp, deQStack);
+        cout << "Moving items from deQStack to temporary stack..." << endl;
+        makeReverseStack(deQStack, temp);
+        cout << "Successfully pushed all items from deQStack into temporary stack" << endl;
+        cout << "------------------------------------" << endl;
+        cout << "Moving items from enQStack to deQStack..." << endl;
+        makeReverseStack(enQStack, deQStack);
+        cout << "Successfully pushed all items from enQStack into deQStack" << endl;
+        cout << "------------------------------------" << endl;
+        cout << "Reinserting items from temporary stack to deQStack..." << endl;
+        makeReverseStack(temp, deQStack);
+        cout << "Successfully pushed all items from temporary stack into deQStack" << endl;
+        cout << "************************************" << endl;
+        cout << "Ticket queue:" << endl;
         deQStack->print();
     }
 };
@@ -229,12 +248,20 @@ void executeCommands(StackQ<TicketItem> *queue ,int option){
             // queue->print();
             break;
         case 3:
-            cout << "First item in queue: ";
+            if (queue->isEmpty()){
+                cout <<"Queue size: " << queue->getSize();
+                cout << " -- No items to peek from" <<endl;
+                return;
+            }
             data = queue->peek();
             data->print();
             break;
         case 4:
-            cout << "Ticket queue:" << endl;
+            if (queue->isEmpty()){
+                cout <<"Queue size: " << queue->getSize();
+                cout << " -- Queue is empty" <<endl;
+                return;
+            }
             queue->print();
             break;
         case 5:
