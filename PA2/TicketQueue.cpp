@@ -228,14 +228,9 @@ void executeCommands(StackQ<TicketItem> *queue ,int option){
             code = genReserveCode();
             data = new TicketItem(fullName, code);
             queue->enqueue(data);
-            // cout << "Updated ticket queue:" << endl;
-            // queue->print();
             break;
         case 2:
             queue->dequeue();
-            // cout << "------------------------------------" << endl;
-            // cout << "Updated ticket queue:" << endl;
-            // queue->print();
             break;
         case 3:
             if (queue->isEmpty()){
