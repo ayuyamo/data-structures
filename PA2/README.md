@@ -194,13 +194,16 @@ This `do-while()` loop uses functions accessible with object `cin` to clear erro
 ```
 
 ## Problem Definition
-- Pictorial representation for the `StackQ` class:
+- **Pictorial representation for the `StackQ` class:**
+
 ![pictorial representation of stacks](https://github.com/ayuyamo/data-structures-projects/blob/df750232bdec98fdfc9f1f62fdf1273d3688b973/PA2/img/PA2StackDiagram.png)
-    - How `enQ()` and `deQ()` functions work with two stacks:
-        - When items are added to the queue, the `enqueue()` function calls `push()` to push items into `enQstack`. Hence the stack represents a list of items in descending order (`Last In First Out`).
 
-        - To make it work like a queue, when `dequeue()` is called the first inserted item should be the first removed. the `deQStack` holds items in order that user inserted them. This was done by popping each item from `enQStack` and push it into `deQStack`. Doing it this way reverses the order of items when they're inserted in `deQStack`, hence it holds the correct order that items in a queue should be deleted (`First In First Out`). 
 
-        - However this became a problem when `deQStack` is not empty. Supposing new items are pushed from `enQstack` into it without first removing exisiting items in `deQStack`, what resulted was wrong order of deleting items, since the newly inserted items will be stacked on top of the items that were supposed to be removed first. Hence if `dequeue()` is called, then the new items were popped when they should be the last items to be removed from the list. 
+- **How `enQ()` and `deQ()` functions work with two stacks:**
+    - When items are added to the queue, the `enqueue()` function calls `push()` to push items into `enQstack`. Hence the stack represents a list of items in descending order (`Last In First Out`).
 
-        - In other words, there's a need for a temporary stack (`temp`) that holds all the exisiting values of `deQStack` (popping items from `deQStack` to `temp`) while items from `enQStack` are inserted into the now empty `deQStack`. After all items from `enQStack` has been pushed into `deQStack`, `temp` will pop items and return them to `deQStack`. That way the queue can maintain the right order of delelting items. 
+    - To make it work like a queue, when `dequeue()` is called the first inserted item should be the first removed. the `deQStack` holds items in order that user inserted them. This was done by popping each item from `enQStack` and push it into `deQStack`. Doing it this way reverses the order of items when they're inserted in `deQStack`, hence it holds the correct order that items in a queue should be deleted (`First In First Out`). 
+
+    - However this became a problem when `deQStack` is not empty. Supposing new items are pushed from `enQstack` into it without first removing exisiting items in `deQStack`, what resulted was wrong order of deleting items, since the newly inserted items will be stacked on top of the items that were supposed to be removed first. Hence if `dequeue()` is called, then the new items were popped when they should be the last items to be removed from the list. 
+
+    - In other words, there's a need for a temporary stack (`temp`) that holds all the exisiting values of `deQStack` (popping items from `deQStack` to `temp`) while items from `enQStack` are inserted into the now empty `deQStack`. After all items from `enQStack` has been pushed into `deQStack`, `temp` will pop items and return them to `deQStack`. That way the queue can maintain the right order of delelting items. 
