@@ -291,6 +291,7 @@ int main(){
                 cout << "Invalid input. Please enter a valid integer (between 1 and 7):" << endl;
                 cin.clear();
                 cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                displayMenu();
             } else {
                 cout << "------------------------------------" << endl;
                 validInput = true;
