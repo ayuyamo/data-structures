@@ -44,7 +44,6 @@ public:
     }
     ~Node(){
         delete data;
-        data = nullptr;
         nextNode = nullptr;
     }
     void print() { data->print(); }
@@ -58,14 +57,9 @@ private:
 
 public:
     //Contrustor
-    LLStack(){
+    LLStack(int maxNum) : SMAXITEMS(maxNum) {
         top = nullptr;
         stackSize = 0;
-    }
-    LLStack(T *data){
-        Node<T> *newNode = new Node<T>(data);
-        top = newNode;
-        stackSize = 1;
     }
     //Destructor
     ~LLStack() {
@@ -84,6 +78,7 @@ public:
             top = newNode;
         } else if (isFull()){
             cout << "Stack full: Cannot insert items" << endl;
+            delete item;
             return;
         } else {
             newNode->nextNode = top;
@@ -106,11 +101,6 @@ public:
     T* peek(){
         return top->data;
     }
-    void deleteAll(){
-        while (top) {
-            pop();
-        } 
-    }
     void print(){
         Node<T> *temp = top;
         while (temp != nullptr) {
@@ -126,13 +116,13 @@ private:
     LLStack<T> *deQStack;
     LLStack<T> *temp;
     int queueSize;
-    const int QMAXITEMS = 20;
+    const int QMAXITEMS = 15; //has to be the same as SMAXITEMS
 public:
     //Contructors
     StackQ(){
-        enQStack = new LLStack<T>();
-        deQStack = new LLStack<T>();
-        temp = new LLStack<T>();
+        enQStack = new LLStack<T>(QMAXITEMS);
+        deQStack = new LLStack<T>(QMAXITEMS);
+        temp = new LLStack<T>(QMAXITEMS);
         queueSize = 0;
     }
     //Destructor
@@ -158,7 +148,7 @@ public:
             cout << "------------------------------------" << endl;
             cout << "Warnings: Queue FULL -- Cannot insert more items" << endl;
             cout << "------------------------------------" << endl;
-            cout << "Item not inserted: " << item->getPersonName() << endl;
+            delete item;
         }
     }
     void makeReverseStack(LLStack<T> *current, LLStack<T> *inverse){

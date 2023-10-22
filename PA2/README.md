@@ -18,17 +18,18 @@
         }
 ```
 - **Destructor:**
-    - not sure what this does yet. 
+    - This destructor is called when an object is about to be destroyed or goes out of scope. It prints the values of the current object (`personName` and `reserveCode`) by calling the `print()` function. This allows the user to see when the destructor is called, but does not perform any memory deallocation because the object will automatically be cleaned up by the default constructor when it goes out of scope. These print statements indicate that the destructor has been executed and the object's memory is released. 
 ```
     ~TicketItem(){
-        personName = nullptr;
-        reserveCode = nullptr;
+        print();
+        cout << " -- Object deleted" << endl;
     }
 ```
 
 - `string getPersonName()`: Fuction returns `string` value of `TicketItem` member variable `personName`.
 - `string getReserveCode()`: Fuction returns `string` value of `TicketItem` member variable `reserveCode`.
 - `void print()`: Upon being called this function prints the `personName` and `reserveCode` values of the  `TicketItem` object (that was used to call `print()`).
+- `TicketItem* duplicateData()`: this function returns a new object with the same `personName` and `reserveCode` values as the current object (the one used by other classes to access this function). This function is used when switching items between different stacks in `StackQ` class because after `pop()` is called, the `data` object of the deleted node will be destroyed, hence trying to access and push it in a different stack generates a compiler error. How it works is this function is called to create an object with duplicate values and push it into the new stack while deleting the old object. 
 ### Node (template)
 - **Fields:**
   - `T *data`: Contains node's data pointer of type `T` (template)
@@ -42,10 +43,10 @@
     }
 ```
 - **Destructor:**
-    - If the `Node` object was destroyed or the program exits, `~Node()` will be called and assign this class's member pointers to `nullptr`. This ensures that the pointer does not point to deallocated memory after the `Node` object was destroyed. 
+    - If the `Node` object was destroyed or goes out of scope, the `~Node()` desctructor is called, which deletes the object `data` points to (hence the pointer will be invalidated after the `delete` operation) and set `nextNode`'s pointer to `nullptr`. This ensures that these pointers  inadvertently point to deallocated memory. 
 ```
     ~Node(){
-        data = nullptr;
+        delete data;
         nextNode = nullptr;
     }
 ```
@@ -57,17 +58,11 @@
     - `int stackSize`: This variable holds an `int` value indicating the number of items currently stored in the stack.
     - `const int SMAXITEMS`: This variable holds a fixed `int` value specifying the max number of items the stack should hold. The idea is an attempt to push items into stack when `stackSize` is already equal to `SMAXITEMS` will cause an overflow. 
 - **Constructor:** 
-    - If no arguments were passed, the no-parameter constructor is called, initializing an empty stack with `top` pointer to `nullptr` (because there is no item in the stack yet) and the `stackSize` to `0`. 
-    - If a `T` object pointer was passed (address to a data object of type `T`), the one-parameter constructor is called, which creates a new `Node<T>` pointer called `newNode` that will be initialized with the passed value pointer (`data`). By this point the stack already has one  `Node<T>` pointer as a stack element, hence the new item will be the top of the stack (`top = newNode`) and `stackSize` will be assigned `1`. 
+    - The constructor initializes `SMAXITEMS` to the passed parameter `maxNum` during the creation of the object because `SMAXITEMS` is `const` (changing a `const` value after the object was created might lead to compilation error). Otherwise, when a `LLStack` object was created, the stack is empty so its `top` pointer is set to `nullptr` and `stackSize` to `0` (because the stack currently has no items). 
 ```    
-    LLStack(){
+    LLStack(int maxNum) : SMAXITEMS(maxNum) {
         top = nullptr;
         stackSize = 0;
-    }
-    LLStack(T *data){
-        Node<T> *newNode = new Node<T>(data);
-        top = newNode;
-        stackSize = 1;
     }
 ```
 - **Destructor:**
@@ -93,8 +88,6 @@
 
     - `T* peek()`: The function returns a `T` object pointer to the data of the `top` item (node) in the stack. That is, it tells user which item will be taken from the stack if `pop()` was called.
 
-    - `void deleteAll()`: This function iterates through and delete each node in the stack.
-
     - `void print()`: This function iterates through and print each node's data (`personName` and `reserveCode`) in the stack. 
 
 ### *StackQ* (Template)
@@ -112,22 +105,27 @@
 - **Constructor:**
     - This constructor initializes an empty queue by creating `3` new empty stacks and assign them to `enQStack`, `deQStack` and `temp`. Since the queue is currently empty, `queueSize` is assigned `0` (no items in queue).
 ```
-    public:
-        //Contructors
-        StackQ(){
-            enQStack = new LLStack<T>();
-            deQStack = new LLStack<T>();
-            temp = new LLStack<T>();
-            queueSize = 0;
-        }
+    //Contructors
+    StackQ(){
+        enQStack = new LLStack<T>(QMAXITEMS);
+        deQStack = new LLStack<T>(QMAXITEMS);
+        temp = new LLStack<T>(QMAXITEMS);
+        queueSize = 0;
+    }
 ```
 - **Destructor:**
-    - This destructor calls `deleteAll()` to iterate and delete all nodes stored inside `enQStack` and `deQStack`. `temp` is always empty because the stack is only used to temporary store items in `deQStack` and at the end be cleared out after `makeDeQStack()` was executed.
+    - This destructor is called when `StackQ` object goes out of scope and it uses `delete` keyword to delete `enQStack` and `deQStack`. This will call the `~LLStack()` destructor for each object which loops through and delete every item (node) in the stack, and once a node is deleted its `data` object will also be destroyed, in this case `~TicketItem()` will be called, which prints the object's `personName` and `reserveCode` before it was destroyed. The `cout` commands are included in the destructor to keep track of the process (verify if each step is executed as expected).
 ```    
+    //Destructor
     ~StackQ() {
-            enQStack->deleteAll();
-            deQStack->deleteAll();
-        }
+        cout << "------------------------------------" << endl;
+        delete enQStack;
+        cout << "enQStack successfully deleted" << endl;
+        cout << "------------------------------------" << endl;
+        delete deQStack;
+        cout << "deQStack successfully deleted" << endl;
+        cout << "------------------------------------" << endl;
+    }
 ```
 
 - **Methods:**
@@ -143,10 +141,12 @@
 
     - `void enqueue(T* item)`:This function takes in a parameter of type `T*` that is pointer to a `T` object, then a new node will be created using this data and its pointer will be pushed into `enQStack`. There is a condition check to see if `queueSize` is full (if so then no new item will be pushed and an overflow warning message will be displayed in the terminal), and if not the new item will be inserted into the queue.  
 
-    - `void makeDeQStack(LLStack<T> *current, LLStack<T> *inverse)`: This is a helper function that basically takes in two stack pointers as arguments, where each item will the popped from the `current` stack to the `inverse` stack (they're pointers, but just say stack because it's fewer words and the actual stacks are edited). The second stack pointer is called `inverse` because the (functionally defined) process of putting each item from `current` into `inverse` will make the stack hold a reversed list of items compared to the `current` stack. This is to make sure that when `dequeue()` is called the items that were inserted first will be taken out first (simulating the dequeuing process using only stack operations).
+    - `void makeReverseStack(LLStack<T> *current, LLStack<T> *inverse)`: This is a helper function that basically takes in two stack pointers as arguments, where each item will the popped from the `current` stack to the `inverse` stack (they're pointers, but just say stack because it's fewer words and the actual stacks are edited). The second stack pointer is called `inverse` because the (functionally defined) process of putting each item from `current` into `inverse` will make the stack hold a reversed list of items compared to the `current` stack. This is to make sure that when `dequeue()` is called the items that were inserted first will be taken out first (simulating the dequeuing process using only stack operations).
 
-    - `void dequeue()`: The function will call `pop()` from `deQStack` (holding stack items in order of removal, so ones that will be removed first is the `top` of the stack) to remove the first inserted item, but if `deQStack` is empty, `makeDeQStack()` is called to take more items from `enqStack()` and reorganizes `deQStack` using `temp` so the list contains the correct order of items to be removed from the queue. 
-    - `T* peek()`: returns a `T*` object pointer to the data object of the node to be deleted from the queue upon `dequeue()` being called.
+    - `void dequeue()`: The function will call `pop()` from `deQStack` (holding stack items in order of removal, so ones that will be removed first is the `top` of the stack) to remove the first inserted item, but if `deQStack` is empty, `makeReverseStack()` is called to take more items from `enqStack()` and reorganizes `deQStack` using `temp` so the list contains the correct order of items to be removed from the queue. 
+
+    - `T* peek()`: returns a `T*` object pointer to the data object of the node to be deleted from the queue upon `dequeue()` being called. Hence this function looks at the `top` of `deQStack` and if it is empty, execute the line `makeReverseStack(enQStack, deQStack);` to push items from `enQStack` to `deQStack` before calling the `LLStack` object's `peek()` function (`return deQStack->peek();`).
+
     - `void print()`: iterates through and prints all items in the queue (the order that items were inserted, not the stack order). To do that, `deQStack` is printed (taking items from `enQStack` and using `temp` to organize the order of items) so that inside the terminal the queue is display from the first item inserted to the last item inserted. 
 
 ## Global functions & variables
@@ -194,6 +194,13 @@ This `do-while()` loop uses functions accessible with object `cin` to clear erro
 ```
 
 ## Problem Definition
-- For the `StackQ` class:
+- Pictorial representation for the `StackQ` class:
     - draw (pictorial representation of stacks) 
-    - explain with an example how `enQ()` and `deQ()` functions work with two stacks.
+    - How `enQ()` and `deQ()` functions work with two stacks:
+        - When items are added to the queue, the `enqueue()` function calls `push()` to push items into `enQstack`. Hence the stack represents a list of items in descending order (`Last In First Out`).
+
+        - To make it work like a queue, when `dequeue()` is called the first inserted item should be the first removed. the `deQStack` holds items in order that user inserted them. This was done by popping each item from `enQStack` and push it into `deQStack`. Doing it this way reverses the order of items when they're inserted in `deQStack`, hence it holds the correct order that items in a queue should be deleted (`First In First Out`). 
+
+        - However this became a problem when `deQStack` is not empty. Supposing new items are pushed from `enQstack` into it without first removing exisiting items in `deQStack`, what resulted was wrong order of deleting items, since the newly inserted items will be stacked on top of the items that were supposed to be removed first. Hence if `dequeue()` is called, then the new items were popped when they should be the last items to be removed from the list. 
+
+        - In other words, there's a need for a temporary stack (`temp`) that holds all the exisiting values of `deQStack` (popping items from `deQStack` to `temp`) while items from `enQStack` are inserted into the now empty `deQStack`. After all items from `enQStack` has been pushed into `deQStack`, `temp` will pop items and return them to `deQStack`. That way the queue can maintain the right order of delelting items. 
