@@ -29,7 +29,7 @@
 - `string getPersonName()`: Fuction returns `string` value of `TicketItem` member variable `personName`.
 - `string getReserveCode()`: Fuction returns `string` value of `TicketItem` member variable `reserveCode`.
 - `void print()`: Upon being called this function prints the `personName` and `reserveCode` values of the  `TicketItem` object (that was used to call `print()`).
-### Node (template)
+### *Node (template)*
 - **Fields:**
   - `T *data`: Contains node's data pointer of type `T` (template)
   - `Node<T> *nextNode`: This is holds the surrent node' s pointer to its next node (type `T`)
