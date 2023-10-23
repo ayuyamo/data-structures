@@ -83,9 +83,10 @@
 
     - `void push(T *item)`: takes in a parameter that is pointer to an object of type `T`. This `push()` function creates a node pointer to this data and insert it to the top of the stack. Before pushing the item this function checks if the stack is full, if so then no push action will be done and inside the terminal a warning message will be displayed telling the user that the stack is full and no additional item can be inserted. `stackSize` then will be incremented by `1` because the stack has one more item.
 
+    - `void push(Node<T> *newNode)`: This is a helper function that is used while transferring nodes from one stack to another (instead of creating new nodes with passed object data because then the already exisiting node with the same `data` will be a waste of memory space because it is not being used for anything). 
     - `void pop()`: This function will delete the item atthe top of the stack. Before that it will update the new `top` to be the the current `top`'s `nextNode`. `stackSize` is then decremented by `1` because the stack just popped a value (has one less item). 
 
-    - `T* returnTop()`: This is a helper function that works the same way as `pop()` except it does not delete the item. The function is used to move objects between stacks (`enQStack`, `deQStack`, and `temp`) when organizing the queue. When called, the function removes the `top` node from current stack (but not deleted) and returns its `data` object. 
+    - `Node<T>* returnTop()`: This is a helper function that works the same way as `pop()` except it does not delete the item. The function is used to move nodes between stacks (`enQStack`, `deQStack`, and `temp`) when organizing the queue. When called, the function removes (but doesn't delete) the `top` node from current stack (but not deleted) and returns the node. 
 
     - `T* peek()`: The function returns a `T` object pointer to the data of the `top` item (node) in the stack. That is, it tells user which item will be taken from the stack if `pop()` was called.
 

@@ -83,6 +83,20 @@ public:
         }
         stackSize++;
     }
+
+    void push(Node<T> *newNode) {
+        if (isEmpty()) {
+            top = newNode;
+        } else if (isFull()){
+            delete newNode;
+            return;
+        } else {
+            newNode->nextNode = top;
+            top = newNode;
+        }
+        stackSize++;
+    }
+    
     void pop(){
         if (stackSize == 0)
             return;
@@ -96,7 +110,7 @@ public:
         stackSize--;
     }
 
-    T* returnTop(){
+    Node<T>* returnTop(){
         if (stackSize == 0)
             return nullptr;
         Node<T> *temp = top;
@@ -105,8 +119,9 @@ public:
         } else {
             top = top->nextNode;
         }
+        temp->nextNode = nullptr;
         stackSize--;
-        return temp->data;
+        return temp;
     }
     T* peek(){
         return top->data;
