@@ -7,47 +7,59 @@
 using namespace std;
 
 void addVertex(int destVertex, vector<int>* visited, vector<int>* unvisited) {
+    // remove vertex from unvisited array and push it in visited array
     unvisited->erase(remove(unvisited->begin(), unvisited->end(), destVertex), unvisited->end());
     visited->push_back(destVertex);
 }
 
 bool elementExists(int element, vector<int>* vec) {
+    // check if an element exists inside the given vector array
     return find(vec->begin(), vec->end(), element) != vec->end();
 }
 
 void printEdge(int startVertex, int destVertex, int cost) {
+    // print the next minimum edge and the new vertex visited
     cout << startVertex << " - " << destVertex << " -> " << cost << endl;
 }
 
-tuple<int, int, int> updateMST(int row, int (*graph)[5], vector<int>* visited) {
+tuple<int, int, int> updateMST(int rowIndex, int (*graph)[5], vector<int>* visited) {
     int minEdge = INT_MAX;
     int minEdgeCol = -1;
-    int minEdgeRow = row;
-    bool hasMinimumEdgeVisitedVertices = false;
+    int minEdgeRow = rowIndex;
+    bool isVisitedVertex = false;
     bool isPermanent = false;
 
+    // start with check for elements inside array at row index = most recently visited vertex
     for (int j = 0; j < 5; j++) {
-        hasMinimumEdgeVisitedVertices = elementExists(j, visited);
-        if (graph[row][j] != 0 && graph[row][j] < minEdge && !hasMinimumEdgeVisitedVertices) {
-            minEdge = graph[row][j];
+        // only connect current vertex to one that has not been visited yet
+        isVisitedVertex = elementExists(j, visited);
+        if (graph[rowIndex][j] != 0 && graph[rowIndex][j] < minEdge && !isVisitedVertex) {
+            minEdge = graph[rowIndex][j];
             minEdgeCol = j;
         }
     }
 
     for (int i = 0; i < 5; i++) {
         isPermanent = elementExists(i, visited);
-        if (graph[i][minEdgeCol] != 0 && graph[i][minEdgeCol] < minEdge && isPermanent) {
+        // this case happens when the current vertex does not have any edge connected to any other unvisited vertex
+        // which means minEdge val for current vertex is still by default -1, or not found 
+        if (minEdgeCol == -1){
+            for (int j = 0; j < 5; j++) {
+                isVisitedVertex = elementExists(j, visited);
+                if (graph[i][j] != 0 && graph[i][j] < minEdge && isPermanent && !isVisitedVertex) {
+                    minEdge = graph[i][j];
+                    minEdgeRow = i;
+                    minEdgeCol = j;
+                }
+            }
+        }
+        // if minEdge of current vertex -> next vertex < minEdge of any other vertex in 'visited' array -> next vertex
+        // replace change val of minEdge to the latter
+        else if (graph[i][minEdgeCol] != 0 && graph[i][minEdgeCol] < minEdge && isPermanent) {
             minEdge = graph[i][minEdgeCol];
             minEdgeRow = i;
         }
     }
-    // for (int i = 0; i < 5; i++) {
-    //     isPermanent = elementExists(i, visited);
-    //     if (graph[i][minEdgeCol] != 0 && graph[i][minEdgeCol] < minEdge && isPermanent) {
-    //         minEdge = graph[i][minEdgeCol];
-    //         minEdgeRow = i;
-    //     }
-    // }
 
     return make_tuple(minEdgeRow, minEdgeCol, minEdge);
 }
@@ -58,7 +70,8 @@ void findMST(int vertex, int (*graph)[5], vector<int>* visited, vector<int>* unv
     int endVertex = vertex;
     int minEdge;
 
-    while(visited->size() <= 5 && !unvisited->empty()) {
+    while(visited->size() <= 5 && !unvisited->empty()) {// ensure visited array has size at most == # of all vertices &
+                                                        // if unvisited array is empty --> MST process is complete --> exit program
         result = updateMST(endVertex, graph, visited);
         startVertex = get<0>(result);
         endVertex = get<1>(result);
@@ -88,21 +101,19 @@ int main() {
     addVertex(4, &visited, &unvisited);
     findMST(4, graph, &visited, &unvisited);
 
-    cout << "All vertices are visited. Exiting program..." << endl;
-
-    // Print elements in the 'unvisited' vector
-    // cout << "Unvisited elements: ";
-    // for (int element : unvisited) {
-    //     cout << element << " ";
-    // }
-    // cout << endl;
-
-    // Print elements in the 'visited' vector
-    cout << "Visited elements: ";
-    for (int element : visited) {
-        cout << element << " ";
+    // Check if the 'unvisited' vector is empty
+    if (unvisited.empty()) {
+        cout << "--> The unvisited array is empty." << endl;
+        cout << "--> All vertices are visited." << endl;
+        // Print elements in the 'visited' vector
+        cout << "--> Visited elements: ";
+        for (int element : visited) {
+            cout << element << " ";
+        }
+        cout << endl;
     }
-    cout << endl;
+
+
 
     cout << "-------Program exited-------" << endl;
 
