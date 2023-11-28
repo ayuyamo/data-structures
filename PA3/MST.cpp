@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <climits>
 #include <iostream>
+#include <numeric>
 
 using namespace std;
 
@@ -94,12 +95,23 @@ int main() {
           /*4*/ {0,  45, 77, 51, 0 },
         };
 
+    // int graph1[N][N] =
+    //     {     // 0   1   2   3   4
+    //       /*0*/ { 0,  45, 5,  46, 4 },
+    //       /*1*/ { 45, 0,  11, 7,  10},
+    //       /*2*/ { 5,  11, 0,  23, 0 },
+    //       /*3*/ { 46, 7,  23, 0,  19},
+    //       /*4*/ { 4,  10, 0,  19, 0 },
+    //     };
+
     vector<int> visited;
-    vector<int> unvisited = {0, 1, 2, 3, 4};
+    vector<int> unvisited(N);
+    // initializing unvisited array using iota()
+	iota(unvisited.begin(), unvisited.end(), 0);
 
     cout << "Prim's MST is Edge -> Cost" << endl;
-    addVertex(4, &visited, &unvisited);
-    findMST(4, graph, &visited, &unvisited);
+    addVertex(2, &visited, &unvisited);
+    findMST(2, graph, &visited, &unvisited);
 
     // Check if the 'unvisited' vector is empty
     if (unvisited.empty()) {
@@ -112,8 +124,6 @@ int main() {
         }
         cout << endl;
     }
-
-
 
     cout << "-------Program exited-------" << endl;
 
