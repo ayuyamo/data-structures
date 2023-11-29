@@ -7,6 +7,8 @@
 
 using namespace std;
 
+const int N = 5;
+
 void addVertex(int destVertex, vector<int>* visited, vector<int>* unvisited) {
     // remove vertex from unvisited array and push it in visited array
     unvisited->erase(remove(unvisited->begin(), unvisited->end(), destVertex), unvisited->end());
@@ -23,7 +25,7 @@ void printEdge(int startVertex, int destVertex, int cost) {
     cout << startVertex << " - " << destVertex << " -> " << cost << endl;
 }
 
-tuple<int, int, int> updateMST(int rowIndex, int (*graph)[5], vector<int>* visited) {
+tuple<int, int, int> updateMST(int rowIndex, int (*graph)[N], vector<int>* visited) {
     int minEdge = INT_MAX;
     int minEdgeCol = -1;
     int minEdgeRow = rowIndex;
@@ -31,7 +33,7 @@ tuple<int, int, int> updateMST(int rowIndex, int (*graph)[5], vector<int>* visit
     bool isPermanent = false;
 
     // start with check for elements inside array at row index = most recently visited vertex
-    for (int j = 0; j < 5; j++) {
+    for (int j = 0; j < N; j++) {
         // only connect current vertex to one that has not been visited yet
         isVisitedVertex = elementExists(j, visited);
         if (graph[rowIndex][j] != 0 && graph[rowIndex][j] < minEdge && !isVisitedVertex) {
@@ -40,12 +42,12 @@ tuple<int, int, int> updateMST(int rowIndex, int (*graph)[5], vector<int>* visit
         }
     }
 
-    for (int i = 0; i < 5; i++) {
+    for (int i = 0; i < N; i++) {
         isPermanent = elementExists(i, visited);
         // this case happens when the current vertex does not have any edge connected to any other unvisited vertex
         // which means minEdge val for current vertex is still by default -1, or not found 
         if (minEdgeCol == -1){
-            for (int j = 0; j < 5; j++) {
+            for (int j = 0; j < N; j++) {
                 isVisitedVertex = elementExists(j, visited);
                 if (graph[i][j] != 0 && graph[i][j] < minEdge && isPermanent && !isVisitedVertex) {
                     minEdge = graph[i][j];
@@ -65,43 +67,37 @@ tuple<int, int, int> updateMST(int rowIndex, int (*graph)[5], vector<int>* visit
     return make_tuple(minEdgeRow, minEdgeCol, minEdge);
 }
 
-void findMST(int vertex, int (*graph)[5], vector<int>* visited, vector<int>* unvisited) {
-    tuple<int, int, int> result;
+void findMST(int vertex, int (*graph)[N], vector<int>* visited, vector<int>* unvisited) {
     int startVertex;
     int endVertex = vertex;
     int minEdge;
-
-    while(visited->size() <= 5 && !unvisited->empty()) {// ensure visited array has size at most == # of all vertices &
-                                                        // if unvisited array is empty --> MST process is complete --> exit program
-        result = updateMST(endVertex, graph, visited);
-        startVertex = get<0>(result);
-        endVertex = get<1>(result);
-        minEdge = get<2>(result);
-
+    while(visited->size() <= N && !unvisited->empty()) 
+    {// ensure visited array has size at most == # of all vertices &
+     // if unvisited array is empty --> MST process is complete --> exit program
+        tie(startVertex, endVertex, minEdge) = updateMST(endVertex, graph, visited);
         addVertex(endVertex, visited, unvisited);
         printEdge(startVertex, endVertex, minEdge);
     }
 }
 
 int main() {
-    const int N = 5;
-
     int graph[N][N] =
         {     // 0   1   2   3   4
-          /*0*/ {0,  3,  65, 0,  0 },
-          /*1*/ {3,  0,  85, 20, 45},
-          /*2*/ {65, 85, 0,  41, 77},
-          /*3*/ {0,  20, 41, 0,  51},
-          /*4*/ {0,  45, 77, 51, 0 },
+          /*0*/ { 00, 03, 65, 00, 00 },
+          /*1*/ { 03, 00, 85, 20, 45 },
+          /*2*/ { 65, 85, 00, 41, 77 },
+          /*3*/ { 00, 20, 41, 00, 51 },
+          /*4*/ { 00, 45, 77, 51, 00 },
         };
 
-    // int graph1[N][N] =
-    //     {     // 0   1   2   3   4
-    //       /*0*/ { 0,  45, 5,  46, 4 },
-    //       /*1*/ { 45, 0,  11, 7,  10},
-    //       /*2*/ { 5,  11, 0,  23, 0 },
-    //       /*3*/ { 46, 7,  23, 0,  19},
-    //       /*4*/ { 4,  10, 0,  19, 0 },
+    // int graph[N][N] = 
+    //     {      //  0   1   2   3   4   5
+    //         /*0*/ {00, 11, 00, 33, 00, 32},      
+    //         /*1*/ {11, 00, 00, 00, 07, 00},
+    //         /*2*/ {00, 00, 00, 00, 00, 25},
+    //         /*3*/ {33, 00, 00, 00, 24, 00},
+    //         /*4*/ {00, 07, 00, 24, 00, 16},
+    //         /*5*/ {32, 00, 25, 00, 16, 00},
     //     };
 
     vector<int> visited;
@@ -110,8 +106,8 @@ int main() {
 	iota(unvisited.begin(), unvisited.end(), 0);
 
     cout << "Prim's MST is Edge -> Cost" << endl;
-    addVertex(2, &visited, &unvisited);
-    findMST(2, graph, &visited, &unvisited);
+    addVertex(4, &visited, &unvisited);
+    findMST(4, graph, &visited, &unvisited);
 
     // Check if the 'unvisited' vector is empty
     if (unvisited.empty()) {
