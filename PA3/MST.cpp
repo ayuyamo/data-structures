@@ -81,23 +81,24 @@ void findMST(int vertex, int (*graph)[N], vector<int>* visited, vector<int>* unv
 }
 
 int main() {
-    int graph[N][N] =
+    int graph1[N][N] =
         {     // 0   1   2   3   4
-          /*0*/ { 00, 03, 65, 00, 00 },
-          /*1*/ { 03, 00, 85, 20, 45 },
-          /*2*/ { 65, 85, 00, 41, 77 },
-          /*3*/ { 00, 20, 41, 00, 51 },
-          /*4*/ { 00, 45, 77, 51, 00 },
+          /*0*/ { 0, 3, 65, 0, 0 },
+          /*1*/ { 3, 0, 85, 20, 45 },
+          /*2*/ { 65, 85, 0, 41, 77 },
+          /*3*/ { 0, 20, 41, 0, 51 },
+          /*4*/ { 0, 45, 77, 51, 0 },
         };
 
-    // int graph[N][N] = 
+
+    // int graph2[N][N] = 
     //     {      //  0   1   2   3   4   5
-    //         /*0*/ {00, 11, 00, 33, 00, 32},      
-    //         /*1*/ {11, 00, 00, 00, 07, 00},
-    //         /*2*/ {00, 00, 00, 00, 00, 25},
-    //         /*3*/ {33, 00, 00, 00, 24, 00},
-    //         /*4*/ {00, 07, 00, 24, 00, 16},
-    //         /*5*/ {32, 00, 25, 00, 16, 00},
+    //         /*0*/ {0, 11, 0, 33, 0, 32},      
+    //         /*1*/ {11, 0, 0, 0, 7, 0},
+    //         /*2*/ {0, 0, 0, 0, 0, 25},
+    //         /*3*/ {33, 0, 0, 0, 24, 0},
+    //         /*4*/ {0, 7, 0, 24, 0, 16},
+    //         /*5*/ {32, 0, 25, 0, 16, 0},
     //     };
 
     vector<int> visited;
@@ -106,8 +107,8 @@ int main() {
 	iota(unvisited.begin(), unvisited.end(), 0);
 
     cout << "Prim's MST is Edge -> Cost" << endl;
-    addVertex(4, &visited, &unvisited);
-    findMST(4, graph, &visited, &unvisited);
+    addVertex(0, &visited, &unvisited); // change the first parameter here and the line below
+    findMST(0, graph1, &visited, &unvisited); // to select different start vertex
 
     // Check if the 'unvisited' vector is empty
     if (unvisited.empty()) {
