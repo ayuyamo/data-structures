@@ -1,4 +1,3 @@
-```markdown
 # Minimum Spanning Tree (MST) Solver
 
 This program finds the Minimum Spanning Tree (MST) of a given graph using Prim's Algorithm.
