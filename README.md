@@ -1,10 +1,10 @@
 # Introduction
 
-**This repository will be used to store all of my programming assignments (separated into folders and numbered in the order that the assignment was given) from SDSU CS210 Data Structures class**
+**This repository contains a collection of programming projects completed during the SDSU CS210 Data Structures class. Each project is organized into separate folders and numbered according to completion order.**
 
-## Programming Assignment 1 ("PA1" folder)
+## Project 1 ("PA1" folder)
 ### Overview
-- This is the first programming assignment in the class where I was given the template for list of predefined functions in `DoubleLinkedList` class (such as `prepend()`, `append()`, `insert()` etc.) and constructor for `Data` class (containing fields `string name` and `int value`) that will be the data type of the nodes I will work with for the purpose of this assignment.
+- This programming assignment entails utilizing a provided template for the `DoubleLinkedList` class, which includes a list of predefined functions such as `prepend()`, `append()`, `insert()`, etc. Additionally, a constructor for the `Data` class is provided, containing fields `string name` and `int value`, which serve as the data type for the nodes involved in this assignment.
 
 ### Details of the Assignment
 The programming assignment is built on implementing the LIST ADT using a Doubly Linked List.
@@ -52,7 +52,15 @@ Chosen. User chooses a menu option. The “how” is your choice.
     - Split List Even Odd
     - Exit
 
-## Programming Assignment 2 ("PA2" folder)
+To run the program, first compile the c++ file:
+```
+g++ -o doubly_linked_list doubly_linked_list.cpp
+```
+Once the compilation is successful, you can run the generated binary/executable:
+```
+./doubly_linked_list
+```
+## Project 2 ("PA2" folder)
 ## Overview 
 - The programming assignment is built on implementing the `STACK & QUEUE ADT` using a `Singly Linked List`.
 - Implementing a Ticket Queue using two `Stacks` (which are in turn implemented as a `Single Linked List`).

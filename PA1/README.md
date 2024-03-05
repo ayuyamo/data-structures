@@ -1,14 +1,4 @@
-# Programming Assignment 1 Methods Explained
-
-- ***Project Name***: Programming Assignment 1
-- ***Author***: Quynh Anh N Do (Halie Do)
-- ***File Structure of the project submitted***: 
-    - A zip file named "Halie_Do.zip" containing:
-        - DoubleLinkedList.cpp
-        - README.pdf
-## Software that was used for this assignment:
-- **VSCode:** This makes it easy for me to push/pull changes from my private repository for programming assignments from this class on github 
-- **How to use:** I just follow tutorials for using **VSCode** on youtube (there are plenty and most of them will help) and they show how to install the software & compilers for different programming languages you choose to write in, how to sign into github account from **VSCode** and switch between branches to push/pull changes from github. Aside from ease of access to github and syncing changes (and its personal preference) I think it owrks the same way as any other IDE. 
+# Programming Assignment 1 
 ## How to get started?
 - When the program first runs, it will create a new list (`DoubleLinkedList<Data> *dll = new DoubleLinkedList<Data>();`). After that, a menu of options for manipulating the list will be displayed, prompting user to type an `int` number between `1` and `13` to pick an option. A warning will be displayed to require typing another number if the input was not in range `1-13`. 
 
